@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import axios from 'axios';
+import axios from 'axios';
+import { DATE, LIMIT, REVERSE, TICKER, TIME_STAMP, TIME_STAMP_LIMIT } from '../../constants/params';
+import apikey from '../../../secrets.json';
 import { AppThunk } from '../../store';
 
 interface Stock {
-	name: string;
-	price: number;
+	// name: string;
+	// price: number;
 }
 
 export interface StockState {
@@ -15,8 +17,8 @@ export interface StockState {
 
 const initialState: StockState = {
 	stock: {
-		name: '',
-		price: 0
+		// name: '',
+		// price: 0
 	},
 	loading: false,
 	errors: ''
@@ -34,12 +36,29 @@ const stockSlice = createSlice({
 			state.errors = payload
 		},
 
-		setPhotos: (state, { payload }: PayloadAction<Stock>) => {
+		setStock: (state, { payload }: PayloadAction<Stock>) => {
 			state.stock = payload
 		}
 	}
 })
 
-export const { setLoading, setErrors, setPhotos } = stockSlice.actions
+// API thunkActions
+export const getStock = (): AppThunk => {
+	return async (dispatch: (arg0: any) => void) => {
+		dispatch(setLoading(true))
+		try {
+			const apikey = 'cmMBCknpq5xC2JDPNY_TqRir8jWGKBSK'
+			const URL: string = `https://api.polygon.io/v2/ticks/stocks/trades/${TICKER}/${DATE}?timestamp=${TIME_STAMP}&timestampLimit=${TIME_STAMP_LIMIT}&reverse=${REVERSE}&limit=${LIMIT}&apiKey=${apikey}`
+
+			const res = await axios.get(URL)
+			dispatch(setLoading(false))
+			dispatch(setStock(res.data))
+		} catch (error) {
+			
+		}
+	}
+}
+
+export const { setLoading, setErrors, setStock } = stockSlice.actions
 export default stockSlice.reducer
 export const stockSelector = (state: {stockStore: StockState}) => state.stockStore
