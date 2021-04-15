@@ -5,8 +5,12 @@ import apikey from '../../../secrets.json';
 import { AppThunk } from '../../store';
 
 interface Stock {
-	// name: string;
-	// price: number;
+	db_latency: number;
+	map: any;
+	results: object[];
+	results_count: number;
+	success: boolean;
+	ticker: string;
 }
 
 export interface StockState {
@@ -17,8 +21,12 @@ export interface StockState {
 
 const initialState: StockState = {
 	stock: {
-		// name: '',
-		// price: 0
+		db_latency: 0,
+		map: null,
+		results: [],
+		results_count: 0,
+		success: false,
+		ticker: ''
 	},
 	loading: false,
 	errors: ''
