@@ -4,24 +4,28 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { configureStore, Action } from '@reduxjs/toolkit'
-import { ThunkAction } from 'redux-thunk'
-import photosSliceReducer from './features/photos/PhotoSlice';
-import { PhotoState } from './features/photos/PhotoSlice';
+import store from './store'
 
-// The AppThunk type will help us in writing type definitions for thunk actions
-export type AppThunk = ThunkAction<void, PhotoState, unknown, Action<string>>;
+// import { configureStore, Action } from '@reduxjs/toolkit'
+// import { ThunkAction } from 'redux-thunk'
+// import photosSliceReducer from './features/photos/PhotoSlice';
+// import { PhotoState } from './features/photos/PhotoSlice';
+// import stockSliceReducer from './features/stocks/StockSlice';
+// import { StockState } from './features/stocks/StockSlice';
 
-const store = configureStore({
-	reducer: {
-		// the convention is to name this photos rather than photosStore but photosStore is clearer to me.
-    photosStore: photosSliceReducer,
+// // The AppThunk type will help us in writing type definitions for thunk actions
+// export type AppThunk = ThunkAction<void, StockState, unknown, Action<string>>;
 
-    // anyOtherStore: anyOtherSlice,
-		// middleware: ['array of middlewares'],
-	},
-	devTools: process.env.NODE_ENV !== 'development' ? false : true,
-})
+// const store = configureStore({
+// 	reducer: {
+// 		// the convention is to name this photos rather than photosStore but photosStore is clearer to me.
+//     // photosStore: photosSliceReducer,
+// 		stockStore: stockSliceReducer
+//     // anyOtherStore: anyOtherSlice,
+// 		// middleware: ['array of middlewares'],
+// 	},
+// 	devTools: process.env.NODE_ENV !== 'development' ? false : true,
+// })
 
 ReactDOM.render(
   <React.StrictMode>

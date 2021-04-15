@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { AppThunk } from '../../index';
+import { AppThunk } from '../../store'
 
 export interface PhotoState {
 	photos: object[];
@@ -18,22 +18,22 @@ const photoSlice = createSlice({
 	name: 'photos',
 	initialState,
 	reducers: {
-		setLoading: (state, { payload }: PayloadAction<boolean>) => {
+		setLoading: (state: { loading: boolean; }, { payload }: PayloadAction<boolean>) => {
 			state.loading = payload
 		},
 
-		setErrors: (state, { payload }: PayloadAction<string>) => {
+		setErrors: (state: { errors: string; }, { payload }: PayloadAction<string>) => {
 			state.errors = payload
 		},
 
-		setPhotos: (state, { payload }: PayloadAction<object[]>) => {
+		setPhotos: (state: { photos: object[]; }, { payload }: PayloadAction<object[]>) => {
 			state.photos = payload
 		}
 	}
 })
 
 export const getPhotos = (): AppThunk => {
-  return async dispatch => {
+  return async (dispatch: (arg0: any) => void) => {
     dispatch(setLoading(true))
     try {
       const baseURL: string = "https://api.nasa.gov/planetary/apod"
