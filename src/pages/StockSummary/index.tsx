@@ -3,8 +3,8 @@ import { Line } from 'react-chartjs-2';
 import { stockSelector, getStock } from '../../reducers/stocks/StockSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment';
-// import { extendMoment } from 'moment-range';
-// const moment = extendMoment(Moment);
+import StockDetails from '../../components/StockDetails'
+import { Container, Row } from 'reactstrap';
 
 interface OpenPrice {
 	v: number;
@@ -54,14 +54,22 @@ export default function StockSummary() {
 
 
 		return (
-			<Line data={data} options={options} />
+			<Container>
+				<Line data={data} options={options} />
+			</Container>
 		)
 	}
 
 	return (
 		<>
 			<div>
-				{stock.status ? createGraph() : null }			
+				{stock.status ? createGraph() : null }	
+				<section className="stock-information-group container">
+					<Row>
+						<StockDetails />		
+						<StockDetails />		
+					</Row>
+				</section>
 			</div>
 		</>
 	)
