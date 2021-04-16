@@ -27,7 +27,8 @@ export default function StockSummary() {
 	
 	const createGraph = () => {
 		const formattedStock = stock.results.map((stockObj:any) => {
-			return { open: stockObj.o, time: stockObj.t	 }
+			const time = moment(stockObj.t).format('h:mm:ss a')
+			return { open: stockObj.o, time }
 		})
 
 		formattedStock.sort((a:any, b:any) => {
@@ -37,7 +38,6 @@ export default function StockSummary() {
 		const openPriceArr = formattedStock.map((s:any) => s.open)
 		// format time
 		const timeArr = formattedStock.map((t:any) => t.time)
-
 		const data = {
 			labels: timeArr,
 			datasets: [{
