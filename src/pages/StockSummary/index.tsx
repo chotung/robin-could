@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { stockSelector, getStock } from '../../reducers/stocks/StockSlice'
 import { useSelector, useDispatch } from 'react-redux'
-// import * as Moment from 'moment';
+import moment from 'moment';
 // import { extendMoment } from 'moment-range';
 // const moment = extendMoment(Moment);
 
@@ -17,7 +17,6 @@ interface OpenPrice {
 	n: number;
 }
 
-
 export default function StockSummary() {
 	const dispatch = useDispatch()
 	const { stock, loading, errors } = useSelector(stockSelector)
@@ -27,26 +26,31 @@ export default function StockSummary() {
 	},[dispatch])
 	
 	const createGraph = () => {
+		const formattedStock = stock.results.map((stockObj:any) => {
+			return { open: stockObj.o, time: stockObj.t	 }
+		})
+
+		formattedStock.sort((a:any, b:any) => {
+			return a.time - b.time
+		})
+		// rename the variables
+		const openPriceArr = formattedStock.map((s:any) => s.open)
+		// format time
+		const timeArr = formattedStock.map((t:any) => t.time)
+
 		const data = {
-			labels: ["January", "February", "March", "April", "May", "June", "July"],
+			labels: timeArr,
 			datasets: [{
 				label: stock.ticker,
 				backgroundColor: 'rgb(255, 99, 132)',
 				borderColor: 'rgb(255, 99, 132)',
-				data: [0, 10, 5, 2, 20, 30, 45],
+				data: openPriceArr,
 			}]
 		}
 
 		const options = {
 			responsive: true
 		}
-
-		// if(stock.results.length !== 0) {
-			const openPrices = stock.results.map((openPrice:any) => {
-				return { open: openPrice.o }
-			})
-			console.log(openPrices);
-		// }
 
 
 		return (
