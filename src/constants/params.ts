@@ -1,8 +1,8 @@
+export const STOCKTICKER:string = 'AAPL'
+export const MULTIPLIER:number = 1
+export const TIMESPAN:string = 'minute'
+export const FROM:string = '2021-04-14'
+export const TO:string = '2021-04-14'
+export const UNADJUSTED:boolean = true
+export const SORT:string = 'asc'
 export const LIMIT:number = 10
-export const REVERSE:boolean = true
-export const TICKER:string = 'AAPL'
-export const DATE:string = '2020-10-14'
-export const TIME_STAMP:number = 0
-export const TIME_STAMP_LIMIT:number = 0
-
-
