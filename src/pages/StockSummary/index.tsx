@@ -1,76 +1,129 @@
 import { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import { stockSelector, getStock } from '../../reducers/stocks/StockSlice'
+import { stockSelector, getStockInAggragateRange, getFinancials, setDailyOpenClose } from '../../reducers/stocks/StockSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment';
 import StockDetails from '../../components/StockDetails'
-import { Container, Row } from 'reactstrap';
-
-interface OpenPrice {
-	v: number;
-	vw: number;
-	o: number;
-	c: number;
-	h: number;
-	l: number;
-	t: number;
-	n: number;
-}
+import { Card, CardBody, Container, Row, Col } from 'reactstrap';
+import StockHeader from '../../components/StockHeader';
 
 export default function StockSummary() {
 	const dispatch = useDispatch()
-	const { stock, loading, errors } = useSelector(stockSelector)
-	useEffect(() => {
-		dispatch(getStock())
+	const { stock, financials, daily, loading, errors } = useSelector(stockSelector)
 
+	// console.log(financials);
+
+	useEffect(() => {
+		dispatch(getStockInAggragateRange())
+		dispatch(getFinancials())
+		dispatch(setDailyOpenClose())
 	},[dispatch])
-	
-	const createGraph = () => {
-		const formattedStock = stock.results.map((stockObj:any) => {
-			const time = moment(stockObj.t).format('h:mm:ss a')
-			return { open: stockObj.o, time }
+		// .startOf('hour').format('h:mm:ss a')
+	const formatData = () => {
+		const formattedStock = stock.results.map((stockObj: any) => {
+			const { o, c, h, l, v, vw, t, n } = stockObj
+			const time = moment(t).startOf('hour').format('h:mm:ss a')
+			const stockObjectInAggregatedWindow = {
+				time,
+				open: o,
+				close: c,
+				highest: h,
+				lowest: l,
+				volume: v,
+				volumeWeightedAvgPrice: vw,
+				numberOfTransactionInRange: n
+			}
+			return stockObjectInAggregatedWindow
 		})
 
-		formattedStock.sort((a:any, b:any) => {
+		formattedStock.sort((a: any, b: any) => {
 			return a.time - b.time
 		})
 		// rename the variables
-		const openPriceArr = formattedStock.map((s:any) => s.open)
+		const openPriceArr = formattedStock.map((s: any) => s.open)
 		// format time
-		const timeArr = formattedStock.map((t:any) => t.time)
+		const timeArr = formattedStock.map((t: any) => t.time)
+		return { open: openPriceArr, time:timeArr }
+	}
+
+	const createGradient = (canvas:any) => {
+		const ctx = canvas.getContext("2d")
+		const gradient = ctx.createLinearGradient(0, 0, 100, 100);
+		gradient.addColorStop(1, ' rgb(0,250,154, 0.3)')
+		ctx.fillStyle = gradient
+
+		const { open, time } = formatData()
+
+		console.log('time', time);
 		const data = {
-			labels: timeArr,
+			// labels: ['4', '5', '6', '7', '8'],
+			labels: time,
 			datasets: [{
 				label: stock.ticker,
-				backgroundColor: 'rgb(255, 99, 132)',
-				borderColor: 'rgb(255, 99, 132)',
-				data: openPriceArr,
+				backgroundColor: gradient,
+				borderColor: ' rgb(0,250,154)',
+				data: open,
 			}]
 		}
-
+		let rollingLabel:any;
 		const options = {
-			responsive: true
+			scales: {
+				xAxes: [{
+					distribution: 'series',
+  				ticks: {
+						autoSkip: false,
+						source: 'labels',
+						callback: function(label:any, index:any, labels:any) {
+							// console.log(label, index, labels);
+							if (rollingLabel !== label) {
+								rollingLabel = label;
+								console.log("roll", rollingLabel);
+								return rollingLabel;
+							}
+						}
+					}
+				}]
+			},
+			responsive: true,
+			title: {
+				display: true,
+			},
+			legend: {
+				display: false
+			},
 		}
+		return { data, options}
+	}
 
+
+	const createGraph = () => {
+		const canvas = document.createElement('canvas')
+		const { data, options } = createGradient(canvas)
 
 		return (
-			<Container>
+			<Container className='graph' style={{ background: '#242424'}}>
 				<Line data={data} options={options} />
 			</Container>
 		)
 	}
 
+
 	return (
 		<>
-			<div>
+			<section id="stock__summary">
+				<StockHeader ticker={stock.ticker}/>
 				{stock.status ? createGraph() : null }	
 				<section className="stock-information-group container">
 					<Row>
-						<StockDetails />		
-						<StockDetails />		
+						<Col className="col-12 flex-row py-1 p-0" >
+							<Card className='flex-md-row'>	
+								{/* <StockDetails details={daily} dir={'left'} />
+								<StockDetails details={daily} dir={'right'} /> */}
+							</Card>
+						</Col>
 					</Row>
 				</section>
-			</div>
+			</section>
 		</>
 	)
 }

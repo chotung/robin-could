@@ -1,11 +1,12 @@
+import { Container } from "reactstrap"
 import "./App.css"
 import StockSummary from './pages/StockSummary'
 
 function App() {
   return (
-		<div className="App">
+		<Container className='App'>
 			<StockSummary />
-		</div>
+		</Container>
 	)
 }
 
