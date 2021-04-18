@@ -1,7 +1,7 @@
 // Move to state?
 export const STOCKTICKER:string = 'AAPL'
 export const MULTIPLIER:number = 1
-export const TIMESPAN:string = 'minute'
+export const TIMESPAN:string = 'hour'
 export const FROM_DATE:string = '2021-04-16'
 export const TO_DATE:string = '2021-04-16'
 export const UNADJUSTED:boolean = true

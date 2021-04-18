@@ -22,7 +22,7 @@ export default function StockSummary() {
 	const formatData = () => {
 		const formattedStock = stock.results.map((stockObj: any) => {
 			const { o, c, h, l, v, vw, t, n } = stockObj
-			const time = moment(t).startOf('hour').format('h:mm:ss a')
+			const time = moment(t)
 			const stockObjectInAggregatedWindow = {
 				time,
 				open: o,
@@ -54,9 +54,7 @@ export default function StockSummary() {
 
 		const { open, time } = formatData()
 
-		console.log('time', time);
 		const data = {
-			// labels: ['4', '5', '6', '7', '8'],
 			labels: time,
 			datasets: [{
 				label: stock.ticker,
@@ -65,22 +63,18 @@ export default function StockSummary() {
 				data: open,
 			}]
 		}
-		let rollingLabel:any;
 		const options = {
 			scales: {
 				xAxes: [{
+					type: 'time',
+					time: {
+						unit: 'hour'
+					},
 					distribution: 'series',
+					bounds: 'ticks',
   				ticks: {
-						autoSkip: false,
-						source: 'labels',
-						callback: function(label:any, index:any, labels:any) {
-							// console.log(label, index, labels);
-							if (rollingLabel !== label) {
-								rollingLabel = label;
-								console.log("roll", rollingLabel);
-								return rollingLabel;
-							}
-						}
+						autoSkip: true,
+						source: 'data',
 					}
 				}]
 			},
