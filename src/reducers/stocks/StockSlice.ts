@@ -39,7 +39,7 @@ const initialState: StockState = {
 	loading: false,
 	errors: '',
 	financials: null,
-	daily:null
+	daily: null
 }
 
 const stockSlice = createSlice({

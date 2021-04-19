@@ -5,7 +5,7 @@ import './index.css'
 export default function StockDetails(props: any) {
 	const { dir } = props
 	const { afterHours, close, from, high, low, open, preMarket, volume } = props.details
-
+	console.log(props.details);
 	const renderCols = () => {
 		return (
 			<>
@@ -49,7 +49,7 @@ export default function StockDetails(props: any) {
 
 	return (
 		<CardBody className='py-1 col-md-6'>
-			{/* {renderCols()} */}
+			{renderCols()}
 		</CardBody>
 	)
 }

@@ -4,7 +4,7 @@ import StockSummary from './pages/StockSummary'
 
 function App() {
   return (
-		<Container className='App'>
+		<Container className='App d-flex flex-column h-100'>
 			<StockSummary />
 		</Container>
 	)

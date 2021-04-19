@@ -4,21 +4,20 @@ import { stockSelector, getStockInAggragateRange, getFinancials, setDailyOpenClo
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment';
 import StockDetails from '../../components/StockDetails'
-import { Card, CardBody, Container, Row, Col } from 'reactstrap';
+import { Card, CardBody, Container, Row, Col, Spinner } from 'reactstrap';
 import StockHeader from '../../components/StockHeader';
+import './index.css'
 
 export default function StockSummary() {
 	const dispatch = useDispatch()
 	const { stock, financials, daily, loading, errors } = useSelector(stockSelector)
 
-	// console.log(financials);
-
 	useEffect(() => {
-		dispatch(getStockInAggragateRange())
-		dispatch(getFinancials())
 		dispatch(setDailyOpenClose())
+		dispatch(getFinancials())
+		dispatch(getStockInAggragateRange())
 	},[dispatch])
-		// .startOf('hour').format('h:mm:ss a')
+
 	const formatData = () => {
 		const formattedStock = stock.results.map((stockObj: any) => {
 			const { o, c, h, l, v, vw, t, n } = stockObj
@@ -47,7 +46,7 @@ export default function StockSummary() {
 	}
 
 	const createGradient = (canvas:any) => {
-		const ctx = canvas.getContext("2d")
+		const ctx = canvas.getContext('2d')
 		const gradient = ctx.createLinearGradient(0, 0, 100, 100);
 		gradient.addColorStop(1, ' rgb(0,250,154, 0.3)')
 		ctx.fillStyle = gradient
@@ -101,21 +100,23 @@ export default function StockSummary() {
 		)
 	}
 
-
+	console.log(daily);
 	return (
 		<>
-			<section id="stock__summary">
+			<section id='stock__summary' className='d-flex justify-content-center flex-column'>
 				<StockHeader ticker={stock.ticker}/>
-				{stock.status ? createGraph() : null }	
-				<section className="stock-information-group container">
+				{stock.status ? createGraph() : <Spinner className='align-self-center'>Loading...</Spinner>}
+				<section className='stock-information-group container'>
+				{daily ?(
 					<Row>
-						<Col className="col-12 flex-row py-1 p-0" >
+						<Col className='col-12 flex-row py-1 p-0' >
 							<Card className='flex-md-row'>	
-								{/* <StockDetails details={daily} dir={'left'} />
-								<StockDetails details={daily} dir={'right'} /> */}
+								<StockDetails details={daily} dir={'left'} />
+								<StockDetails details={daily} dir={'right'} />
 							</Card>
 						</Col>
-					</Row>
+					</Row>) :
+				null}
 				</section>
 			</section>
 		</>
