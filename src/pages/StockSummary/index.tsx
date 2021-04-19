@@ -7,6 +7,8 @@ import StockDetails from '../../components/StockDetails'
 import { Card, CardBody, Container, Row, Col, Spinner } from 'reactstrap';
 import StockHeader from '../../components/StockHeader';
 import './index.css'
+import StockNews from '../../components/StockNews/Index';
+import StockGraphNav from '../../components/StockGraphNav';
 
 export default function StockSummary() {
 	const dispatch = useDispatch()
@@ -48,10 +50,15 @@ export default function StockSummary() {
 	const createGradient = (canvas:any) => {
 		const ctx = canvas.getContext('2d')
 		const gradient = ctx.createLinearGradient(0, 0, 100, 100);
+
+		return {ctx, gradient} 
+	}
+	const configureGraph = (canvas:any) => {
+		const { open, time } = formatData()
+		const { ctx, gradient } = createGradient(canvas)
+		
 		gradient.addColorStop(1, ' rgb(0,250,154, 0.3)')
 		ctx.fillStyle = gradient
-
-		const { open, time } = formatData()
 
 		const data = {
 			labels: time,
@@ -77,6 +84,7 @@ export default function StockSummary() {
 					}
 				}]
 			},
+			maintainAspectRatio: false,
 			responsive: true,
 			title: {
 				display: true,
@@ -91,20 +99,20 @@ export default function StockSummary() {
 
 	const createGraph = () => {
 		const canvas = document.createElement('canvas')
-		const { data, options } = createGradient(canvas)
+		const { data, options } = configureGraph(canvas)
 
 		return (
-			<Container className='graph' style={{ background: '#242424'}}>
+			<Container className='graph' >
 				<Line data={data} options={options} />
 			</Container>
 		)
 	}
 
-	console.log(daily);
 	return (
 		<>
-			<section id='stock__summary' className='d-flex justify-content-center flex-column'>
-				<StockHeader ticker={stock.ticker}/>
+			<section id='stock__summary' className={`d-flex flex-column ${loading  === false ? '' : 'justify-content-center'} flex-grow-1 flex-shrink-1`}>
+				{/* <StockHeader ticker={stock.ticker}/> */}
+				<StockGraphNav />
 				{stock.status ? createGraph() : <Spinner className='align-self-center'>Loading...</Spinner>}
 				<section className='stock-information-group container'>
 				{daily ?(
@@ -118,6 +126,9 @@ export default function StockSummary() {
 					</Row>) :
 				null}
 				</section>
+				{/* {stock.status ? (<section>
+					<StockNews />
+				</section>): null} */}
 			</section>
 		</>
 	)

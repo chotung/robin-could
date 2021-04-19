@@ -1,4 +1,5 @@
 // Move to state?
+// Allow users to select the params
 export const STOCKTICKER:string = 'AAPL'
 export const MULTIPLIER:number = 1
 export const TIMESPAN:string = 'hour'
