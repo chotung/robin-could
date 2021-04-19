@@ -1,19 +1,37 @@
-import React, { useEffect } from "react"
-import { stockSelector, getStock } from './features/stocks/StockSlice'
-import { useSelector, useDispatch } from "react-redux"
+import { Container } from "reactstrap"
 import "./App.css"
+import StockSummary from './pages/StockSummary'
+import SearchBar from './components/SearchBar'
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link
+} from "react-router-dom";
+import SearchPage from "./pages/SearchPage";
+
 
 function App() {
-  const dispatch = useDispatch()
-	const { stock, loading, errors } = useSelector(stockSelector)
-
-  console.log(stock, loading, errors)
-
-  useEffect(() => {
-    dispatch(getStock())
-  }, [dispatch])
-
-  return <div className="App">Hello world</div>
+  return (
+		<div>
+			<Router>
+				<Switch>
+					<Route path='/stock/AAPL'>
+						{/* <header className='jumbotron jumbotron-fluid'>
+							Logo
+							<SearchBar />
+						</header> */}
+						<main className='App d-flex flex-column h-100 container'>
+							<StockSummary />
+						</main>
+					</Route>
+					<Route path='/'>
+						<SearchPage/>
+					</Route>
+				</Switch>
+			</Router>
+		</div>
+	)
 }
 
 export default App

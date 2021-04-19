@@ -1,0 +1,8 @@
+/* #stock__summary {
+	flex: 1 1 auto;
+} */
+
+.graph {
+	background-color:#242424;
+	min-height: 500px;
+}

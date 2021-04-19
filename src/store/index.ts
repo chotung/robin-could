@@ -1,7 +1,7 @@
 import { configureStore, Action } from '@reduxjs/toolkit'
 import { ThunkAction } from 'redux-thunk'
-import stockSliceReducer from '../features/stocks/StockSlice';
-import { StockState } from '../features/stocks/StockSlice';
+import stockSliceReducer from '../reducers/stocks/StockSlice';
+import { StockState } from '../reducers/stocks/StockSlice';
 
 // can define them here so you don't have to write it in the slice/reducer
 // make a separate file for custom typing or make it more dynamic?

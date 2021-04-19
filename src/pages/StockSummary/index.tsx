@@ -1,0 +1,135 @@
+import { useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+import { stockSelector, getStockInAggragateRange, getFinancials, setDailyOpenClose } from '../../reducers/stocks/StockSlice'
+import { useSelector, useDispatch } from 'react-redux'
+import moment from 'moment';
+import StockDetails from '../../components/StockDetails'
+import { Card, CardBody, Container, Row, Col, Spinner } from 'reactstrap';
+import StockHeader from '../../components/StockHeader';
+import './index.css'
+import StockNews from '../../components/StockNews/Index';
+import StockGraphNav from '../../components/StockGraphNav';
+
+export default function StockSummary() {
+	const dispatch = useDispatch()
+	const { stock, financials, daily, loading, errors } = useSelector(stockSelector)
+
+	useEffect(() => {
+		dispatch(setDailyOpenClose())
+		dispatch(getFinancials())
+		dispatch(getStockInAggragateRange())
+	},[dispatch])
+
+	const formatData = () => {
+		const formattedStock = stock.results.map((stockObj: any) => {
+			const { o, c, h, l, v, vw, t, n } = stockObj
+			const time = moment(t)
+			const stockObjectInAggregatedWindow = {
+				time,
+				open: o,
+				close: c,
+				highest: h,
+				lowest: l,
+				volume: v,
+				volumeWeightedAvgPrice: vw,
+				numberOfTransactionInRange: n
+			}
+			return stockObjectInAggregatedWindow
+		})
+
+		formattedStock.sort((a: any, b: any) => {
+			return a.time - b.time
+		})
+		// rename the variables
+		const openPriceArr = formattedStock.map((s: any) => s.open)
+		// format time
+		const timeArr = formattedStock.map((t: any) => t.time)
+		return { open: openPriceArr, time:timeArr }
+	}
+
+	const createGradient = (canvas:any) => {
+		const ctx = canvas.getContext('2d')
+		const gradient = ctx.createLinearGradient(0, 0, 100, 100);
+
+		return {ctx, gradient} 
+	}
+	const configureGraph = (canvas:any) => {
+		const { open, time } = formatData()
+		const { ctx, gradient } = createGradient(canvas)
+		
+		gradient.addColorStop(1, ' rgb(0,250,154, 0.3)')
+		ctx.fillStyle = gradient
+
+		const data = {
+			labels: time,
+			datasets: [{
+				label: stock.ticker,
+				backgroundColor: gradient,
+				borderColor: ' rgb(0,250,154)',
+				data: open,
+			}]
+		}
+		const options = {
+			scales: {
+				xAxes: [{
+					type: 'time',
+					time: {
+						unit: 'hour'
+					},
+					distribution: 'series',
+					bounds: 'ticks',
+  				ticks: {
+						autoSkip: true,
+						source: 'data',
+					}
+				}]
+			},
+			maintainAspectRatio: false,
+			responsive: true,
+			title: {
+				display: true,
+			},
+			legend: {
+				display: false
+			},
+		}
+		return { data, options}
+	}
+
+
+	const createGraph = () => {
+		const canvas = document.createElement('canvas')
+		const { data, options } = configureGraph(canvas)
+
+		return (
+			<Container className='graph' >
+				<Line data={data} options={options} />
+			</Container>
+		)
+	}
+
+	return (
+		<>
+			<section id='stock__summary' className={`d-flex flex-column ${loading  === false ? '' : 'justify-content-center'} flex-grow-1 flex-shrink-1`}>
+				{/* <StockHeader ticker={stock.ticker}/> */}
+				<StockGraphNav />
+				{stock.status ? createGraph() : <Spinner className='align-self-center'>Loading...</Spinner>}
+				<section className='stock-information-group container'>
+				{daily ?(
+					<Row>
+						<Col className='col-12 flex-row py-1 p-0' >
+							<Card className='flex-md-row'>	
+								<StockDetails details={daily} dir={'left'} />
+								<StockDetails details={daily} dir={'right'} />
+							</Card>
+						</Col>
+					</Row>) :
+				null}
+				</section>
+				{/* {stock.status ? (<section>
+					<StockNews />
+				</section>): null} */}
+			</section>
+		</>
+	)
+}
