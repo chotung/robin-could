@@ -1,0 +1,12 @@
+.stock__header__group {
+ padding-left: 2em;
+}
+.bullish {
+  border-left: 10px solid rgb(39, 211, 39);
+}
+
+
+.bearish {
+  border-left: 10px solid red;
+
+}

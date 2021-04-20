@@ -1,16 +1,16 @@
 .left {
-	text-align: left;
+  text-align: left;
 }
 
 .right {
-	text-align: right;
+  text-align: right;
 }
 
 .card-body .row .col {
-	border-bottom: grey 1px solid;
+  border-bottom: grey 1px solid;
 }
 
 .card-text {
-	font-weight: 700;
-	padding: 1em;
+  font-weight: 700;
+  padding: 1em;
 }

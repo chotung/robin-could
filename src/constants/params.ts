@@ -1,11 +1,14 @@
 // Move to state?
+
+import moment from "moment";
+
 // Allow users to select the params
-export const STOCKTICKER:string = 'AAPL'
-export const MULTIPLIER:number = 1
-export const TIMESPAN:string = 'hour'
-export const FROM_DATE:string = '2021-04-16'
-export const TO_DATE:string = '2021-04-16'
-export const UNADJUSTED:boolean = true
-export const SORT:string = 'asc'
-export const LIMIT:number = 120
-export const DATE:string = '2021-04-14'
+export const STOCKTICKER = "AAPL";
+export const MULTIPLIER = 5;
+export const TIMESPAN = "minute";
+export const FROM_DATE = moment().format("YYYY-MM-D");
+export const TO_DATE = "2021-04-19";
+export const UNADJUSTED = true;
+export const SORT = "asc";
+export const LIMIT = 5000;
+export const DATE = "2021-04-14";

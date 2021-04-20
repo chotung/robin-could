@@ -3,6 +3,10 @@
 } */
 
 .graph {
-	background-color:#242424;
-	min-height: 500px;
+  /* background-color: #242424; */
+  min-height: 500px;
+}
+
+.stock-card {
+	border: 0 !important;
 }
