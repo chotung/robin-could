@@ -4,8 +4,9 @@ import moment from "moment";
 import { LIMIT, SORT, UNADJUSTED } from "../../constants/params";
 import key from "../../secrets";
 import { AppThunk } from "../../store";
-
-const currentDate = moment().subtract(1, "day").format("YYYY-MM-D");
+// Have to build around weekends 
+// stock information is skewed during those times
+const currentDate = moment().format("YYYY-MM-D");
 
 export interface StockState {
   stock: any;
@@ -83,7 +84,7 @@ export const getStockInAggragateRange = (stock?: any, search?: any): AppThunk =>
 		const searchStock =  search || initialState.searchStock  
     dispatch(setLoading(true));
     try {
-			dispatch(setSearchStock(search))
+			dispatch(setSearchStock(searchStock))
       const URL = `https://api.polygon.io/v2/aggs/ticker/${searchStock}/range/${multiplier}/${timeSpan}/${fromDate}/${toDate}?unadjusted=${UNADJUSTED}&sort=${SORT}&limit=${LIMIT}&apiKey=${key.apiKey}`;
       const res = await axios.get(URL);
       dispatch(setLoading(false));
@@ -121,7 +122,7 @@ export const getDailyOpenClose = (stock?: any, search?: any): AppThunk => {
       .format("YYYY-MM-D");
     dispatch(setLoading(true));
     try {
-			dispatch(setSearchStock(search))
+			dispatch(setSearchStock(searchStock))
 
       const URL = `https://api.polygon.io/v1/open-close/${searchStock}/${earliestDailyOpenClose}?unadjusted=true&apiKey=${key.apiKey}`;
       const res = await axios.get(URL);

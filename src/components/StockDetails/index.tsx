@@ -52,5 +52,5 @@ export default function StockDetails(props: any) {
     );
   };
 
-  return <CardBody className="py-1 col-md-6">{renderCols()}</CardBody>;
+  return <CardBody className="py-1 px-1 col-md-6">{renderCols()}</CardBody>;
 }

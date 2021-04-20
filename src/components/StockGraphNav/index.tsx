@@ -23,8 +23,8 @@ export default function StockGraphNav() {
   };
 
   return (
-    <nav>
-      <Nav className="p-3">{createButtons()}</Nav>
+    <nav className="stock__graph__nav">
+      <Nav className="py-3 px-0">{createButtons()}</Nav>
     </nav>
   );
 }

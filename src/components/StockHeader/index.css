@@ -1,5 +1,5 @@
 .stock__header__group {
- padding-left: 2em;
+ padding-left: 12px;
 }
 .bullish {
   border-left: 10px solid rgb(39, 211, 39);
@@ -8,5 +8,8 @@
 
 .bearish {
   border-left: 10px solid red;
+}
 
+.stock__jumbo {
+	background-color: #fff !important;
 }

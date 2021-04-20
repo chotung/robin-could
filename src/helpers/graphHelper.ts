@@ -15,7 +15,7 @@ export const configureGraph = (
   const { open, time } = formatData(stock, range);
   const { ctx, gradient } = createGradient(canvas);
 
-  parseFloat(net) < 0 ?  gradient.addColorStop(1, "rgb(255, 49, 49, 0.38)") : gradient.addColorStop(1, " rgb(0,250,154, 0.3)");
+  parseFloat(net) < 0 ?  gradient.addColorStop(1, "rgb(255,80,0, .1") : gradient.addColorStop(1, " rgb(0,250,154, 0.3)");
   ctx.fillStyle = gradient;
 
   const data = {
@@ -24,7 +24,9 @@ export const configureGraph = (
       {
         label: stock.ticker,
         backgroundColor: gradient,
-        borderColor: (parseFloat(net)  < 0 ? "rgb(255, 49, 49)" : "rgb(0,250,154)"),
+        borderColor: (parseFloat(net)  < 0 ? "rgb(255,80,0)" : "rgb(0,250,154)"),
+				tension: 0,
+				spanGaps: true,
         data: open,
       },
     ],

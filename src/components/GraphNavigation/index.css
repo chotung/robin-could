@@ -1,0 +1,11 @@
+.btn {
+	color: black !important;
+	background-color: #fff !important;
+	border:#fff !important;
+	box-shadow: none !important;
+}
+
+.active {
+	color: orange !important;
+	text-decoration: underline !important;
+}

@@ -25,6 +25,7 @@ export default function SearchBar() {
 		<>
 			<Container>
 				<Select 
+					placeholder="Search"
 					value={option}
 					onChange={handleChange}
 					options={options}

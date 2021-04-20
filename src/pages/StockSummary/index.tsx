@@ -35,7 +35,7 @@ export default function StockSummary() {
     );
 
     return (
-      <Container className="graph">
+      <Container className="graph p-0">
         <Line data={data} options={options} />
       </Container>
     );

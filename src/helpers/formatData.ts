@@ -55,15 +55,17 @@ export const adjustRange = (
   range: string,
   dispatch: any,
   setRange: any,
-  getStockInAggragateRange: any
+  getStockInAggragateRange: any,
+	stock: any
 ) => {
   const stockObjectOptions: any = {
     searchStock: "AAPL",
   };
+	stockObjectOptions.searchStock = stock
   stockObjectOptions.multiplier = multiplier;
   stockObjectOptions.timeSpan = timeSpan;
   stockObjectOptions.fromDate = fromDate;
   stockObjectOptions.toDate = toDate;
   dispatch(setRange(range));
-  dispatch(getStockInAggragateRange(stockObjectOptions));
+  dispatch(getStockInAggragateRange(stockObjectOptions, stockObjectOptions.searchStock));
 };
