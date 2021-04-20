@@ -6,7 +6,8 @@
 
 ## Installation
 - API key from polygon.io 
-- npm install
+- npm install to install dependencies
+- npm start to start the application
   
 
 
