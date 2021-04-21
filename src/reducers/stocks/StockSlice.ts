@@ -20,7 +20,8 @@ export interface StockState {
   fromDate: string;
   toDate: string;
   multiplier: number;
-	netGainLoss: any
+	netGainLoss: any;
+	tickerDetails: any;
 }
 
 const initialState: StockState = {
@@ -35,7 +36,8 @@ const initialState: StockState = {
   fromDate: currentDate,
   toDate: currentDate,
   multiplier: 5,
-	netGainLoss: null
+	netGainLoss: null,
+	tickerDetails: null
 };
 
 const stockSlice = createSlice({
@@ -69,10 +71,14 @@ const stockSlice = createSlice({
     setSearchStock: (state, { payload }: PayloadAction<any>) => {
       state.searchStock = payload;
     },
-    setNetGainLoss: (state, { payload }: PayloadAction<any>) => {
+    
+		setNetGainLoss: (state, { payload }: PayloadAction<any>) => {
       state.netGainLoss = payload;
     },
-
+		
+		setTickerDetails: (state, { payload }: PayloadAction<any>) => {
+			state.tickerDetails = payload
+		}
 
   },
 });
@@ -101,7 +107,7 @@ export const getFinancials = (): AppThunk => {
   return async (dispatch: (arg0: any) => void) => {
     dispatch(setLoading(true));
     try {
-      const URL = `https://api.polygon.io/v2/reference/financials/AAPL?limit=1&type=Q&sort=-calendarDate&apiKey=${key.apiKey}`;
+      const URL = `https://api.polygon.io/v2/reference/financials/AAPL?limit=1&type=YA&sort=-calendarDate&apiKey=${key.apiKey}`;
       const res = await axios.get(URL);
       dispatch(setLoading(false));
       dispatch(setFinancials(res.data));
@@ -135,6 +141,25 @@ export const getDailyOpenClose = (stock?: any, search?: any): AppThunk => {
   };
 };
 
+export const getTickerDetails = (stock?: any, search?: any): AppThunk => {
+  return async (dispatch: (arg0: any) => void) => {
+		const searchStock =  search || initialState.searchStock  
+    // need to adjust to to account for weekends
+    // endpoint will throw an error if it's the weekend
+    dispatch(setLoading(true));
+    try {
+			dispatch(setSearchStock(searchStock))
+      const URL = `https://api.polygon.io/v1/meta/symbols/${searchStock}/company?&apiKey=${key.apiKey}`
+      const res = await axios.get(URL);
+      dispatch(setLoading(false));
+      dispatch(setTickerDetails(res.data));
+    } catch (error) {
+      dispatch(setErrors(error));
+      dispatch(setLoading(false));
+    }
+  };
+};
+
 
 export const {
   setLoading,
@@ -144,7 +169,8 @@ export const {
   setDaily,
   setRange,
 	setSearchStock,
-	setNetGainLoss
+	setNetGainLoss,
+	setTickerDetails
 } = stockSlice.actions;
 export default stockSlice.reducer;
 export const stockSelector = (state: { stockStore: StockState }) =>

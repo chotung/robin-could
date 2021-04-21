@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { useSelector, useDispatch } from "react-redux";
-import { getDailyOpenClose, getStockInAggragateRange, stockSelector } from '../../reducers/stocks/StockSlice';
+import { getDailyOpenClose, getStockInAggragateRange, getTickerDetails, stockSelector } from '../../reducers/stocks/StockSlice';
 import { Container } from 'reactstrap';
 
 
@@ -18,6 +18,7 @@ export default function SearchBar() {
 		setOption(option)
 		dispatch(getStockInAggragateRange(undefined, option.value))
 		dispatch(getDailyOpenClose(undefined, option.value))
+		dispatch(getTickerDetails(undefined, option.value))
 	};
 
 

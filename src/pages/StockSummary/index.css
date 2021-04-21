@@ -1,6 +1,6 @@
-/* #stock__summary {
-	flex: 1 1 auto;
-} */
+.about {
+	border-bottom: rgb(227, 233, 237) solid 1px;
+}
 
 .graph {
   /* background-color: #242424; */
@@ -10,3 +10,4 @@
 .stock-card {
 	border: 0 !important;
 }
+

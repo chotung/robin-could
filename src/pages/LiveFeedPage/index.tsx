@@ -6,35 +6,35 @@ import React, { Component } from 'react'
 export default class LiveFeedPage extends Component {
 	state:any = {}
 
-	componentDidMount() {
-		const ws = new WebSocket('wss://socket.polygon.io/stocks')
-		ws.onmessage = this.onMessage
+	// componentDidMount() {
+		//const ws = new WebSocket('wss://socket.polygon.io/stocks')
+	// 	ws.onmessage = this.onMessage
 
-		this.setState({
-			ws: ws,
-			// Create an interval to send echo messages to the server
-			interval: setInterval(() => ws.send('echo'), 1000)
-		})
-	}
+	// 	this.setState({
+	// 		ws: ws,
+	// 		// Create an interval to send echo messages to the server
+	// 		interval: setInterval(() => ws.send('echo'), 1000)
+	// 	})
+	// }
 
-	componentWillUnmount() {
-		const { ws, interval } = this.state;
-		ws.close()
-		clearInterval(interval)
-	}
+	// componentWillUnmount() {
+	// 	const { ws, interval } = this.state;
+	// 	ws.close()
+	// 	clearInterval(interval)
+	// }
 
-	onMessage = (ev:any) => {
-		const recv = JSON.parse(ev.data)
-		console.log(recv);
-		const { data, count } = this.state
-		let newData = [...data]
-		// Remove first data if we received more than 20 values
-		if (count > 20) {
-			newData = newData.slice(1)
-		}
-		newData.push({ value: recv.value, index: count })
-		this.setState({ data: newData, count: count + 1 })
-	}
+	// onMessage = (ev:any) => {
+	// 	const recv = JSON.parse(ev.data)
+	// 	console.log(recv);
+	// 	const { data, count } = this.state
+	// 	let newData = [...data]
+	// 	// Remove first data if we received more than 20 values
+	// 	if (count > 20) {
+	// 		newData = newData.slice(1)
+	// 	}
+	// 	newData.push({ value: recv.value, index: count })
+	// 	this.setState({ data: newData, count: count + 1 })
+	// }
 	render() {
 		return (
 			<div>

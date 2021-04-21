@@ -20,7 +20,7 @@ export const formatData = (stock: any, range: string) => {
     return a.time - b.time;
   });
   let removeInvalidTimes;
-  if (range === "1D") {
+  if (range === "1D" || range === "5D") {
     removeInvalidTimes = formattedStock.filter((stock: any) => {
       const startingPeriod = parseInt(
         moment(stock.time).startOf("hour").format("h")
@@ -35,12 +35,12 @@ export const formatData = (stock: any, range: string) => {
   }
   // rename the variables
   const openPriceArr =
-    range === "1D"
+    (range === "1D" || range === "5D")
       ? removeInvalidTimes.map((s: any) => s.open)
       : formattedStock.map((s: any) => s.open);
   // format time
   const timeArr =
-    range === "1D"
+    (range === "1D" || range === "5D")
       ? removeInvalidTimes.map((t: any) => t.time)
       : formattedStock.map((t: any) => t.time);
 
@@ -56,7 +56,7 @@ export const adjustRange = (
   dispatch: any,
   setRange: any,
   getStockInAggragateRange: any,
-	stock: any
+	stock: any,
 ) => {
   const stockObjectOptions: any = {
     searchStock: "AAPL",
