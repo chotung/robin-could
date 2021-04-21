@@ -28,7 +28,7 @@ export default function StockDetails(props: any) {
 					<p className={"stock__label " + label3}>
 						{label3}
 					</p>
-				<p className={label3 + " value"}>
+					<p className={label3 + " value"}>
 						{sd3}
 					</p>
 				</div> : null}
@@ -36,7 +36,7 @@ export default function StockDetails(props: any) {
 					<p className={"stock__label " + label4}>
 						{label4}
 					</p>
-				<p className={label4 + " value"}>
+					<p className={label4 + " value"}>
 						{sd4}
 					</p>
 				</div> : null}

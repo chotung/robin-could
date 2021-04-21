@@ -16,7 +16,6 @@ export default function StockHeader(props: Props) {
   const latestPrice = results[results.length - 1].o;
   const gainLoss = calculateNetDiff(latestPrice, first);
 	dispatch(setNetGainLoss(gainLoss))
-		// (parseFloat(gainLoss) < 0 ? 'bearish' : 'bullish')
   return (
     <section>
 			<Jumbotron fluid className={"text-left py-1 m-0 stock__jumbo"} >

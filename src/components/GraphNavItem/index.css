@@ -14,12 +14,10 @@
 .active-bullish {
   color:rgb(39, 211, 39) !important;
 	border-bottom: rgb(39, 211, 39) 1px solid !important;
-
 }
 
 
 .active-bearish {
 	color: rgb(255,80,0) !important;
 	border-bottom: rgb(255,80,0) 1px solid !important;
-
 }

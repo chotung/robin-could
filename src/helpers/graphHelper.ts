@@ -3,7 +3,6 @@ import { NonceProvider } from "react-select";
 const createGradient = (canvas: any) => {
   const ctx = canvas.getContext("2d");
   const gradient = ctx.createLinearGradient(0, 0, 100, 100);
-	// ctx.style.backgroundColor = '#fff'
   return { ctx, gradient };
 };
 
@@ -16,8 +15,6 @@ export const configureGraph = (
 ) => {
   const { open, time } = formatData(stock, range);
   const { ctx, gradient } = createGradient(canvas);
-  // parseFloat(net) < 0 ?  gradient.addColorStop(1, "rgb(255,80,0, .1") : gradient.addColorStop(1, " rgb(0,250,154, 0.3)");
-  // ctx.fillStyle = gradient;
   const data = {
     labels: time,
     datasets: [
