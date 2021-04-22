@@ -16,23 +16,26 @@ import StockGraphNav from "../../components/StockGraphNav";
 import { formatData } from "../../helpers/formatData";
 import { configureGraph } from "../../helpers/graphHelper";
 
-export default function StockSummary() {
+const StockSummary: React.FC = () => {
   const dispatch = useDispatch();
   const { tickerDetails, stock, currentRange, daily, loading, netGainLoss } = useSelector(stockSelector);
+
   useEffect(() => {
     dispatch(getStockInAggragateRange());
     dispatch(getDailyOpenClose());
     dispatch(getFinancials())
 		dispatch(getTickerDetails())
   }, [dispatch]);
+	
   const createGraph = () => {
     const canvas = document.createElement("canvas");
     const { data, options } = configureGraph(
       canvas,
       formatData,
       stock,
+			false,
       currentRange,
-			netGainLoss
+			netGainLoss,
     );
 
     return (
@@ -50,8 +53,8 @@ export default function StockSummary() {
           loading === false ? "" : "justify-content-center"
         } flex-grow-1 flex-shrink-1`}
       >
-        {stock.status ? <StockHeader stock={stock} /> : null}
-        {stock.status ? (
+        {stock?.status ? <StockHeader stock={stock} /> : null}
+        {stock?.status ? (
           <>
             {createGraph()}
             <StockGraphNav />
@@ -79,3 +82,5 @@ export default function StockSummary() {
     </>
   );
 }
+
+export default StockSummary

@@ -2,8 +2,9 @@ import "./App.css";
 import StockSummary from "./pages/StockSummary";
 import SearchBar from "./components/SearchBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import LiveFeedPage from "./pages/LiveFeedPage";
 
-function App() {
+const App: React.FC = () => {
   return (
     <div>
       <Router>
@@ -14,6 +15,7 @@ function App() {
             </header>
             <main className="App d-flex flex-column h-100 container">
               <StockSummary />
+							{/* <LiveFeedPage /> */}
             </main>
           </Route>
         </Switch>

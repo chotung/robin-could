@@ -21,3 +21,7 @@
 	color: rgb(255,80,0) !important;
 	border-bottom: rgb(255,80,0) 1px solid !important;
 }
+
+.btn-link:hover {
+	text-decoration: none !important;
+}

@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { Jumbotron } from "reactstrap";
 import { calculateNetDiff } from "../../helpers/calculateNetDiff";
@@ -9,7 +10,7 @@ interface Props {
 }
 
 
-export default function StockHeader(props: Props) {
+const StockHeader = (props: Props) : ReactElement =>{
 	const dispatch = useDispatch()
   const { results, ticker } = props.stock;
   const first = results[0].o;
@@ -28,3 +29,6 @@ export default function StockHeader(props: Props) {
     </section>
   );
 }
+
+
+export default StockHeader

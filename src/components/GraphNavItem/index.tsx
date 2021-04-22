@@ -8,8 +8,15 @@ import {
 } from "../../reducers/stocks/StockSlice";
 import { Button, NavItem } from "reactstrap";
 import "./index.css"
+import { ReactElement } from "react";
 
-export default function GraphNavItem(props: any) {
+// interface NavButton {
+	// range: string;
+	// setActive: any;
+	// isActive: any;
+// }
+
+const GraphNavItem = (props: any): ReactElement => {
   const dispatch = useDispatch();
 	const { searchStock, netGainLoss } = useSelector(stockSelector);
   const { range, setActive, isActive } = props;
@@ -155,11 +162,12 @@ export default function GraphNavItem(props: any) {
         break;
     }
   };
+	console.log(netGainLoss);
 
   return (
     <NavItem>
       <Button
-				className={(isActive ? "active-": "") + (netGainLoss > 0 ? "bullish" : "bearish")  }
+				className={(isActive ? "active-": "") + ( range ? "bullish" : "bearish")  }
         onClick={(e) => changeRange(e)}
         color={isActive ? "success" : "link"}
       >
@@ -168,3 +176,7 @@ export default function GraphNavItem(props: any) {
     </NavItem>
   );
 }
+
+
+
+export default GraphNavItem

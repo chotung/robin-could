@@ -1,4 +1,3 @@
-import { NonceProvider } from "react-select";
 
 const createGradient = (canvas: any) => {
   const ctx = canvas.getContext("2d");
@@ -10,10 +9,12 @@ export const configureGraph = (
   canvas: any,
   formatData: any,
   stock: any,
-  range: string,
-	net: string
+	live:boolean,
+  range?: string,
+	net?: any,
 ) => {
-  const { open, time } = formatData(stock, range);
+  const { open, time } = formatData(stock, range, live);
+	console.log(open, time, "GRAPH HELPER")
   const { ctx, gradient } = createGradient(canvas);
   const data = {
     labels: time,
