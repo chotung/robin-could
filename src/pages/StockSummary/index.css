@@ -1,5 +1,5 @@
 .about {
-	border-bottom: rgb(227, 233, 237) solid 1px;
+  border-bottom: rgb(227, 233, 237) solid 1px;
 }
 
 .graph {
@@ -8,6 +8,5 @@
 }
 
 .stock-card {
-	border: 0 !important;
+  border: 0 !important;
 }
-

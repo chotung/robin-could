@@ -4,23 +4,23 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getStockInAggragateRange,
   setRange,
-	stockSelector,
+  stockSelector,
 } from "../../reducers/stocks/StockSlice";
 import { Button, NavItem } from "reactstrap";
-import "./index.css"
+import "./index.css";
 import { ReactElement } from "react";
 
 // interface NavButton {
-	// range: string;
-	// setActive: any;
-	// isActive: any;
+// range: string;
+// setActive: any;
+// isActive: any;
 // }
 
 const GraphNavItem = (props: any): ReactElement => {
   const dispatch = useDispatch();
-	const { searchStock, netGainLoss } = useSelector(stockSelector);
+  const { searchStock, netGainLoss } = useSelector(stockSelector);
   const { range, setActive, isActive } = props;
-	
+
   const changeRange = (e: any) => {
     const range: string = e.target.innerText;
     let fromDate, toDate, timeSpan, multiplier;
@@ -39,7 +39,7 @@ const GraphNavItem = (props: any): ReactElement => {
           dispatch,
           setRange,
           getStockInAggragateRange,
-					searchStock,
+          searchStock
         );
         setActive(0);
         break;
@@ -58,7 +58,7 @@ const GraphNavItem = (props: any): ReactElement => {
           dispatch,
           setRange,
           getStockInAggragateRange,
-					searchStock,
+          searchStock
         );
         setActive(1);
         break;
@@ -77,7 +77,7 @@ const GraphNavItem = (props: any): ReactElement => {
           dispatch,
           setRange,
           getStockInAggragateRange,
-					searchStock,
+          searchStock
         );
         setActive(2);
         break;
@@ -96,7 +96,7 @@ const GraphNavItem = (props: any): ReactElement => {
           dispatch,
           setRange,
           getStockInAggragateRange,
-					searchStock,
+          searchStock
         );
         setActive(3);
         break;
@@ -115,7 +115,7 @@ const GraphNavItem = (props: any): ReactElement => {
           dispatch,
           setRange,
           getStockInAggragateRange,
-					searchStock,
+          searchStock
         );
         setActive(4);
         break;
@@ -134,7 +134,7 @@ const GraphNavItem = (props: any): ReactElement => {
           dispatch,
           setRange,
           getStockInAggragateRange,
-					searchStock,
+          searchStock
         );
         setActive(5);
         break;
@@ -153,7 +153,7 @@ const GraphNavItem = (props: any): ReactElement => {
           dispatch,
           setRange,
           getStockInAggragateRange,
-					searchStock,
+          searchStock
         );
         setActive(6);
         break;
@@ -162,12 +162,13 @@ const GraphNavItem = (props: any): ReactElement => {
         break;
     }
   };
-	console.log(netGainLoss);
 
   return (
     <NavItem>
       <Button
-				className={(isActive ? "active-": "") + ( range ? "bullish" : "bearish")  }
+        className={
+          (isActive ? "active-" : "") + (range ? "bullish" : "bearish")
+        }
         onClick={(e) => changeRange(e)}
         color={isActive ? "success" : "link"}
       >
@@ -175,8 +176,6 @@ const GraphNavItem = (props: any): ReactElement => {
       </Button>
     </NavItem>
   );
-}
+};
 
-
-
-export default GraphNavItem
+export default GraphNavItem;

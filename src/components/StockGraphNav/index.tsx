@@ -2,7 +2,7 @@
 import { Nav } from "reactstrap";
 import GraphNavigation from "../GraphNavItem";
 import { useState } from "react";
-import './index.css'
+import "./index.css";
 
 export default function StockGraphNav() {
   const [active, setActive] = useState(0);

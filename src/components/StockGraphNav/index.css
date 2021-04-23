@@ -1,9 +1,9 @@
 .stock__graph__nav {
-	padding-bottom: 0;
-	border-bottom: rgb(227, 233, 237) solid 1px;
+  padding-bottom: 0;
+  border-bottom: rgb(227, 233, 237) solid 1px;
 }
 
 .button__group .nav-item:first-child button {
-	background-color: black;
-	padding-left: 0 !important;
+  background-color: black;
+  padding-left: 0 !important;
 }

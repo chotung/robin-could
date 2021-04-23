@@ -15,13 +15,13 @@ const App: React.FC = () => {
             </header>
             <main className="App d-flex flex-column h-100 container">
               <StockSummary />
-							{/* <LiveFeedPage /> */}
+              {/* <LiveFeedPage /> */}
             </main>
           </Route>
         </Switch>
       </Router>
     </div>
   );
-}
+};
 
 export default App;
