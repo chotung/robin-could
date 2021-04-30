@@ -1,9 +1,21 @@
-import { CardBody, CardText, Col, Row } from "reactstrap";
+import { Col } from "reactstrap";
 import "./index.css";
 
-export default function StockDetails(props: any) {
-  const { sd1, sd2, sd3, sd4, label1, label2, label3, label4 } = props;
+interface StockLabelAndInfo {
+  sd1: string;
+  sd2: string;
+  sd3?: string;
+  sd4?: string;
+  label1: string;
+  label2: string;
+  label3?: string;
+  label4?: string;
+}
 
+const StockDetails: React.FC<StockLabelAndInfo> = (
+  props: StockLabelAndInfo
+) => {
+  const { sd1, sd2, sd3, sd4, label1, label2, label3, label4 } = props;
   const renderCols = () => {
     return (
       <>
@@ -40,4 +52,6 @@ export default function StockDetails(props: any) {
       {renderCols()}
     </Col>
   );
-}
+};
+
+export default StockDetails;

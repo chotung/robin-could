@@ -5,44 +5,45 @@ import { configureGraph } from "../../helpers/graphHelper";
 import { formatData } from "../../helpers/formatData";
 // Wanted to implement however the websocket gave me unauthorized despite saying I was unautheticated
 // export default class LiveFeedPage extends Component {
-import { stockSelector, getLiveFeed } from "../../reducers/stocks/StockSlice";
+import { stockSelector } from "../../reducers/stocks/StockSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { getPolygonLiveFeed } from "../../clients/polygon";
 
 const LiveFeedPage = () => {
-  const dispatch = useDispatch();
-  const { liveFeed } = useSelector(stockSelector);
-  useEffect(() => {
-    dispatch(getLiveFeed());
+	const dispatch = useDispatch();
+	const { liveFeed } = useSelector(stockSelector);
+	useEffect(() => {
+		dispatch(getPolygonLiveFeed());
 
-    // return () => {
-    // }
-  }, []);
+		// return () => {
+		// }
+	}, []);
 
-  const createGraph = () => {
-    if (liveFeed !== undefined) {
-      const canvas = document.createElement("canvas");
-      const { data, options } = configureGraph(
-        canvas,
-        formatData,
-        liveFeed,
-        true,
-        undefined,
-        undefined
-      );
+	const createGraph = () => {
+		if (liveFeed !== undefined) {
+			const canvas = document.createElement("canvas");
+			const { data, options } = configureGraph(
+				canvas,
+				formatData,
+				liveFeed,
+				true,
+				undefined,
+				undefined
+			);
 
-      return (
-        <Container className="graph p-0">
-          <Line data={data} options={options} />
-        </Container>
-      );
-    }
-  };
+			return (
+				<Container className="graph p-0">
+					<Line data={data} options={options} />
+				</Container>
+			);
+		}
+	};
 
-  return (
-    <div className="App">
-      <header className="App-header">{createGraph()}</header>
-    </div>
-  );
+	return (
+		<div className="App">
+			<header className="App-header">{createGraph()}</header>
+		</div>
+	);
 };
 
 export default LiveFeedPage;

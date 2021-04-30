@@ -1,4 +1,13 @@
-// import { polygonClient } from "./polygonClient";
+import {
+  getPolygonAggregateStock,
+  getPolygonDailyOpenClose,
+  getPolygonTickerDetails,
+  getPolygonLiveFeed,
+} from "./polygonClient";
 
-// export { polygonClient };
-export {};
+export {
+  getPolygonAggregateStock,
+  getPolygonDailyOpenClose,
+  getPolygonTickerDetails,
+  getPolygonLiveFeed,
+};

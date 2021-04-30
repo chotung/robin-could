@@ -1,12 +1,17 @@
 import { configureStore, Action } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
 import stockSliceReducer from "../reducers/stocks/StockSlice";
-import { StockState } from "../reducers/stocks/StockSlice";
+import { StockState } from "../reducers/stocks/types";
 
 // can define them here so you don't have to write it in the slice/reducer
 // make a separate file for custom typing or make it more dynamic?
 // The AppThunk type will help us in writing type definitions for thunk actions
-export type AppThunk = ThunkAction<void, StockState, unknown, Action<string>>;
+export type AppThunk = ThunkAction<
+  Promise<void>,
+  StockState,
+  unknown,
+  Action<string>
+>;
 
 const store = configureStore({
   reducer: {

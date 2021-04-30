@@ -1,103 +1,14 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import moment from "moment";
-import polygonUrlConstants from "../../constants/polygonUrlConstants";
-import { createWebSocket, webSocketAction } from "../../helpers/WebSocket";
-import { apiKey } from "../../polygonApiKey";
-import { AppThunk } from "../../store";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Stock, StockState, Financials, Daily, TickerDetails, Trade } from "./types";
+const currentDate = moment().format("YYYY-MM-D");
+
 // Have to build around weekends
 // stock information is skewed during those times
-const currentDate = moment().format("YYYY-MM-D");
-const { LIMIT, SORT, UNADJUSTED } = polygonUrlConstants;
 
 // Move to another file to allow for testing and reusability
-interface Stock {
-  ticker: string;
-  queryCount: number;
-  resultsCount: number;
-  adjusted: boolean;
-  results: [];
-  status: string;
-  request_id: string;
-  count: number;
-}
 
-interface Financials {
-  status: string;
-  results: [];
-}
-
-interface Daily {
-  status: string;
-  from: string;
-  symbol: string;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume: number;
-  afterHours: number;
-  preMarket: number;
-}
-
-interface TickerDetails {
-  logo: string;
-  listdate: string;
-  cik: string;
-  bloomberg: string;
-  figi: string;
-  lei: string;
-  sic: number;
-  country: string;
-  industry: string;
-  sector: string;
-  marketcap: number;
-  employees: number;
-  phone: string;
-  ceo: string;
-  url: string;
-  description: string;
-  exchange: string;
-  name: string;
-  symbol: string;
-  exchangeSymbol: string;
-  hq_address: string;
-  hq_state: string;
-  hq_country: string;
-  type: string;
-  updated: string;
-}
-
-interface Trade {
-  ev: string;
-  sym: string;
-  x: number;
-  i: string;
-  z: number;
-  p: number;
-  s: number;
-  c: number[];
-  t: number;
-}
-
-export interface StockState {
-  stock?: Stock;
-  loading: boolean;
-  errors: string;
-  financials?: Financials;
-  daily?: Daily;
-  tickerDetails?: TickerDetails;
-  currentRange: string;
-  searchStock: string;
-  timeSpan: string;
-  fromDate: string;
-  toDate: string;
-  multiplier: number;
-  netGainLoss: string;
-  liveFeed: Trade[];
-}
-
-const initialState: StockState = {
+export const initialState: StockState = {
   stock: undefined,
   loading: false,
   errors: "",
@@ -154,122 +65,11 @@ const stockSlice = createSlice({
       state.tickerDetails = payload;
     },
 
-    addToLiveFeed: (state, { payload }: PayloadAction<any>) => {
+    addToLiveFeed: (state, { payload }: PayloadAction<Trade>) => {
       state.liveFeed = state.liveFeed.concat(payload);
     },
   },
 });
-
-// API thunkActions
-// Move to another file to allow for testing and reusability
-export const getStockInAggragateRange = (
-  stock?: any,
-  search?: any
-): AppThunk => {
-  return async (dispatch: (arg0: any) => void) => {
-    const { multiplier, timeSpan, fromDate, toDate } = stock
-      ? stock
-      : initialState;
-    const searchStock = search || initialState.searchStock;
-    dispatch(setLoading(true));
-    try {
-      dispatch(setSearchStock(searchStock));
-      const URL = `https://api.polygon.io/v2/aggs/ticker/${searchStock}/range/${multiplier}/${timeSpan}/${fromDate}/${toDate}?unadjusted=${UNADJUSTED}&sort=${SORT}&limit=${LIMIT}&apiKey=${apiKey}`;
-      const res = await axios.get(URL);
-      dispatch(setLoading(false));
-      dispatch(setStock(res.data));
-      // format the data before saving it
-    } catch (error) {
-      dispatch(setErrors(error));
-      dispatch(setLoading(false));
-    }
-  };
-};
-
-export const getFinancials = (): AppThunk => {
-  return async (dispatch: (arg0: any) => void) => {
-    dispatch(setLoading(true));
-    try {
-      const URL = `https://api.polygon.io/v2/reference/financials/AAPL?limit=1&type=YA&sort=-calendarDate&apiKey=${apiKey.apiKey}`;
-      const res = await axios.get(URL);
-      dispatch(setLoading(false));
-      dispatch(setFinancials(res.data));
-    } catch (error) {
-      dispatch(setErrors(error));
-      dispatch(setLoading(false));
-    }
-  };
-};
-
-export const getDailyOpenClose = (stock?: any, search?: any): AppThunk => {
-  return async (dispatch: (arg0: any) => void) => {
-    const searchStock = search || initialState.searchStock;
-    // need to adjust to to account for weekends
-    // endpoint will throw an error if it's the weekend
-    const earliestDailyOpenClose = moment()
-      .subtract(1, "days")
-      .format("YYYY-MM-D");
-    dispatch(setLoading(true));
-    try {
-      dispatch(setSearchStock(searchStock));
-
-      const URL = `https://api.polygon.io/v1/open-close/${searchStock}/${earliestDailyOpenClose}?unadjusted=true&apiKey=${apiKey}`;
-      const res = await axios.get(URL);
-      dispatch(setLoading(false));
-      dispatch(setDaily(res.data));
-    } catch (error) {
-      dispatch(setErrors(error));
-      dispatch(setLoading(false));
-    }
-  };
-};
-
-export const getTickerDetails = (stock?: any, search?: any): AppThunk => {
-  return async (dispatch: (arg0: any) => void) => {
-    const searchStock = search || initialState.searchStock;
-    // need to adjust to to account for weekends
-    // endpoint will throw an error if it's the weekend
-    dispatch(setLoading(true));
-    try {
-      dispatch(setSearchStock(searchStock));
-      const URL = `https://api.polygon.io/v1/meta/symbols/${searchStock}/company?&apiKey=${apiKey}`;
-      const res = await axios.get(URL);
-      dispatch(setLoading(false));
-      dispatch(setTickerDetails(res.data));
-    } catch (error) {
-      dispatch(setErrors(error));
-      dispatch(setLoading(false));
-    }
-  };
-};
-
-export const getLiveFeed = (search?: any): AppThunk => {
-  return async (dispatch: (arg0: any) => void) => {
-    const searchStock = search || initialState.searchStock;
-    dispatch(setLoading(true));
-    try {
-      dispatch(setSearchStock(searchStock));
-      const ws = createWebSocket(`wss://delayed.polygon.io/stocks`);
-      // Need to pass different stock
-      ws.onopen = () => {
-        ws.send(webSocketAction("auth", apiKey));
-        ws.send(
-          webSocketAction("subscribe", `"T. ${initialState.searchStock}"`)
-        );
-      };
-
-      ws.onmessage = (event: any) => {
-        const res = JSON.parse(event.data);
-        console.log(res);
-        dispatch(setLoading(false));
-        dispatch(addToLiveFeed(res));
-      };
-    } catch (error) {
-      dispatch(setErrors);
-      dispatch(setLoading(false));
-    }
-  };
-};
 
 export const {
   setLoading,
@@ -284,5 +84,4 @@ export const {
   addToLiveFeed,
 } = stockSlice.actions;
 export default stockSlice.reducer;
-export const stockSelector = (state: { stockStore: StockState }) =>
-  state.stockStore;
+export const stockSelector = (state: { stockStore: StockState }): StockState => state.stockStore;

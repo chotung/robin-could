@@ -1,19 +1,23 @@
-const createGradient = (canvas: any) => {
+const createGradient = (canvas: HTMLCanvasElement) => {
   const ctx = canvas.getContext("2d");
-  const gradient = ctx.createLinearGradient(0, 0, 100, 100);
+  const gradient = ctx?.createLinearGradient(0, 0, 100, 100);
   return { ctx, gradient };
 };
 
+// should separate logic for api and websocket
+
 export const configureGraph = (
-  canvas: any,
+  canvas: HTMLCanvasElement,
   formatData: any,
   stock: any,
   live: boolean,
   range?: string,
   net?: any
 ) => {
+
   const { open, time } = formatData(stock, range, live);
-  const { ctx, gradient } = createGradient(canvas);
+  const { gradient } = createGradient(canvas);
+
   const data = {
     labels: time,
     datasets: [
@@ -69,3 +73,5 @@ export const configureGraph = (
   };
   return { data, options };
 };
+
+

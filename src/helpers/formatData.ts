@@ -1,14 +1,9 @@
 import moment from "moment";
+// import { Stock, Trade } from "../reducers/stocks/types";
 
-interface StockPriceAndTime {
-  open: number[];
-  time: number[];
-}
 
-export const formatData = (stock: any, range?: string, live?: boolean): any => {
-  console.log(stock);
+export const formatData = (stock: any, range?: string, live?: boolean): any=> {
   if (stock.status === "" && stock.results.length === 0) {
-    console.log("API is Delayed");
     return { open: [], price: [] };
   }
   if (live) {
@@ -77,7 +72,7 @@ export const adjustRange = (
   setRange: any,
   getStockInAggragateRange: any,
   stock: any
-) => {
+): void => {
   const stockObjectOptions: any = {
     searchStock: "AAPL",
   };

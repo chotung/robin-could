@@ -2,7 +2,7 @@ import "./App.css";
 import StockSummary from "./pages/StockSummary";
 import SearchBar from "./components/SearchBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import LiveFeedPage from "./pages/LiveFeedPage";
+// import LiveFeedPage from "./pages/LiveFeedPage";
 
 const App: React.FC = () => {
   return (
