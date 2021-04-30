@@ -1,16 +1,33 @@
 .left {
-	text-align: left;
+  text-align: left;
 }
 
 .right {
-	text-align: right;
+  text-align: right;
 }
 
 .card-body .row .col {
-	border-bottom: grey 1px solid;
+  border-bottom: grey 1px solid;
 }
 
 .card-text {
-	font-weight: 700;
-	padding: 1em;
+  font-weight: 700;
+  padding: 1em;
+}
+
+.stock__detail {
+  margin-bottom: 1em;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: -0.1px;
+  flex: 1 1 auto !important;
+}
+
+.stock__label {
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.value {
+  margin-bottom: 0;
 }

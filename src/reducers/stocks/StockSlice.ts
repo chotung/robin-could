@@ -1,128 +1,87 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { DATE, FROM_DATE, LIMIT, MULTIPLIER, SORT, STOCKTICKER, TIMESPAN, TO_DATE, UNADJUSTED } from '../../constants/params';
-import key from '../../secrets';
-import { AppThunk } from '../../store';
+import moment from "moment";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Stock, StockState, Financials, Daily, TickerDetails, Trade } from "./types";
+const currentDate = moment().format("YYYY-MM-D");
 
-// interface Stock {
-// 	ticker: string;
-// 	queryCount:number;
-// 	resultsCount:number;
-// 	adjusted:boolean;
-// 	results:any;
-// 	status:string;
-// 	request_id:string;
-// 	count:number;
-// }
+// Have to build around weekends
+// stock information is skewed during those times
 
+// Move to another file to allow for testing and reusability
 
-// Can be more explicit when the information required is known
-export interface StockState {
-	stock: any;
-	loading: boolean;
-	errors: string;
-	financials: any;
-	daily: any;
-}
-
-const initialState: StockState = {
-	stock: {
-		ticker: '',
-		queryCount: 0,
-		resultsCount: 0,
-		adjusted: false,
-		results:[],
-		status: '',
-		request_id: '',
-		count: 0
-	},
-	loading: false,
-	errors: '',
-	financials: null,
-	daily: null
-}
+export const initialState: StockState = {
+  stock: undefined,
+  loading: false,
+  errors: "",
+  financials: undefined,
+  daily: undefined,
+  currentRange: "1D",
+  searchStock: "AAPL",
+  timeSpan: "minute",
+  fromDate: currentDate,
+  toDate: currentDate,
+  multiplier: 5,
+  netGainLoss: "0",
+  tickerDetails: undefined,
+  liveFeed: [],
+};
 
 const stockSlice = createSlice({
-	name: 'stock',
-	initialState,
-	reducers: {
-		setLoading: (state, { payload }: PayloadAction<boolean>) => {	
-			state.loading = payload
-		},
+  name: "stock",
+  initialState,
+  reducers: {
+    setLoading: (state, { payload }: PayloadAction<boolean>) => {
+      state.loading = payload;
+    },
 
-		setErrors: (state, { payload }: PayloadAction<string>) => {
-			state.errors = payload
-		},
+    setErrors: (state, { payload }: PayloadAction<string>) => {
+      state.errors = payload;
+    },
 
-		setStock: (state, { payload }: PayloadAction<any>) => {
-			state.stock = payload
-		},
+    setStock: (state, { payload }: PayloadAction<Stock>) => {
+      state.stock = payload;
+    },
 
-		setFinancials: (state, { payload }: PayloadAction<any>) => {
-			state.financials = payload
-		},
+    setFinancials: (state, { payload }: PayloadAction<Financials>) => {
+      state.financials = payload;
+    },
 
-		setDaily: (state, { payload }: PayloadAction<any>) => {
-			state.daily = payload
-		},
+    setDaily: (state, { payload }: PayloadAction<Daily>) => {
+      state.daily = payload;
+    },
 
-	}
-})
+    setRange: (state, { payload }: PayloadAction<string>) => {
+      state.currentRange = payload;
+    },
 
-// API thunkActions
-export const getStockInAggragateRange = (): AppThunk => {
-	return async (dispatch: (arg0: any) => void) => {
-		dispatch(setLoading(true))
-		try {
-			const URL:string = `https://api.polygon.io/v2/aggs/ticker/${STOCKTICKER}/range/${MULTIPLIER}/${TIMESPAN}/${FROM_DATE}/${TO_DATE}?unadjusted=${UNADJUSTED}&sort=${SORT}&limit=${LIMIT}&apiKey=${key.apiKey}`
-			const res = await axios.get(URL)
-			dispatch(setLoading(false))
-			dispatch(setStock(res.data))
-			// format the data before saving it
-		} catch (error) {
-			dispatch(setErrors(error))
-      dispatch(setLoading(false))
-		}
-	}
-}
+    setSearchStock: (state, { payload }: PayloadAction<string>) => {
+      state.searchStock = payload;
+    },
 
-export const getFinancials = (): AppThunk => {
-	return async (dispatch: (arg0: any) => void) => {
-		dispatch(setLoading(true)) 
-		try {
-			const URL:string = `https://api.polygon.io/v2/reference/financials/AAPL?limit=1&type=Q&sort=-calendarDate&apiKey=${key.apiKey}`
-			const res = await axios.get(URL)
-			dispatch(setLoading(false))
-			dispatch(setFinancials(res.data))
-		} catch (error) {
-			dispatch(setErrors(error))
-      dispatch(setLoading(false))
-		}
-	}
-}
+    setNetGainLoss: (state, { payload }: PayloadAction<string>) => {
+      state.netGainLoss = payload;
+    },
 
-export const setDailyOpenClose = (): AppThunk => {
-	return async (dispatch: (arg0: any) => void) => {
-		dispatch(setLoading(true)) 
-		try {
-			const URL:string = `https://api.polygon.io/v1/open-close/AAPL/2021-04-16?unadjusted=true&apiKey=${key.apiKey}`
-			const res = await axios.get(URL)
-			dispatch(setLoading(false))
-			dispatch(setDaily(res.data))
-		} catch (error) {
-			dispatch(setErrors(error))
-      dispatch(setLoading(false))
-		}
-	}
-}
+    setTickerDetails: (state, { payload }: PayloadAction<TickerDetails>) => {
+      state.tickerDetails = payload;
+    },
 
+    addToLiveFeed: (state, { payload }: PayloadAction<Trade>) => {
+      state.liveFeed = state.liveFeed.concat(payload);
+    },
+  },
+});
 
-
-
-
-
-
-
-export const { setLoading, setErrors, setStock, setFinancials, setDaily } = stockSlice.actions
-export default stockSlice.reducer
-export const stockSelector = (state: {stockStore: StockState}) => state.stockStore
+export const {
+  setLoading,
+  setErrors,
+  setStock,
+  setFinancials,
+  setDaily,
+  setRange,
+  setSearchStock,
+  setNetGainLoss,
+  setTickerDetails,
+  addToLiveFeed,
+} = stockSlice.actions;
+export default stockSlice.reducer;
+export const stockSelector = (state: { stockStore: StockState }): StockState => state.stockStore;

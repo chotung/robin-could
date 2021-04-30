@@ -1,37 +1,27 @@
-import { Container } from "reactstrap"
-import "./App.css"
-import StockSummary from './pages/StockSummary'
-import SearchBar from './components/SearchBar'
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Link
-} from "react-router-dom";
-import SearchPage from "./pages/SearchPage";
+import "./App.css";
+import StockSummary from "./pages/StockSummary";
+import SearchBar from "./components/SearchBar";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+// import LiveFeedPage from "./pages/LiveFeedPage";
 
-
-function App() {
-  return (
+const App: React.FC = () => {
+	return (
 		<div>
 			<Router>
 				<Switch>
-					<Route path='/stock/AAPL'>
-						{/* <header className='jumbotron jumbotron-fluid'>
-							Logo
+					<Route path="/">
+						<header className="jumbotron jumbotron-fluid m-0 py-3">
 							<SearchBar />
-						</header> */}
-						<main className='App d-flex flex-column h-100 container'>
+						</header>
+						<main className="App d-flex flex-column h-100 container">
 							<StockSummary />
+							{/* <LiveFeedPage /> */}
 						</main>
-					</Route>
-					<Route path='/'>
-						<SearchPage/>
 					</Route>
 				</Switch>
 			</Router>
 		</div>
-	)
-}
+	);
+};
 
-export default App
+export default App;

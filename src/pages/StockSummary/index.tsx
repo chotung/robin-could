@@ -1,135 +1,112 @@
-import { useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
-import { stockSelector, getStockInAggragateRange, getFinancials, setDailyOpenClose } from '../../reducers/stocks/StockSlice'
-import { useSelector, useDispatch } from 'react-redux'
-import moment from 'moment';
-import StockDetails from '../../components/StockDetails'
-import { Card, CardBody, Container, Row, Col, Spinner } from 'reactstrap';
-import StockHeader from '../../components/StockHeader';
-import './index.css'
-import StockNews from '../../components/StockNews/Index';
-import StockGraphNav from '../../components/StockGraphNav';
+import "./index.css";
+import { useEffect } from "react";
+import { Line } from "react-chartjs-2";
+import {
+	stockSelector
+} from "../../reducers/stocks/StockSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { Container, Row, Spinner } from "reactstrap";
+import StockHeader from "../../components/StockHeader";
+import StockDetails from "../../components/StockDetails";
+import StockGraphNav from "../../components/StockGraphNav";
+import { formatData } from "../../helpers/formatData";
+import { configureGraph } from "../../helpers/graphHelper";
+import {
+	getPolygonAggregateStock,
+	getPolygonDailyOpenClose,
+	getPolygonTickerDetails,
+} from "../../clients/polygon";
 
-export default function StockSummary() {
-	const dispatch = useDispatch()
-	const { stock, financials, daily, loading, errors } = useSelector(stockSelector)
+const StockSummary: React.FC = () => {
+	const dispatch = useDispatch();
+	const {
+		tickerDetails,
+		stock,
+		currentRange,
+		daily,
+		loading,
+		netGainLoss,
+	} = useSelector(stockSelector);
 
 	useEffect(() => {
-		dispatch(setDailyOpenClose())
-		dispatch(getFinancials())
-		dispatch(getStockInAggragateRange())
-	},[dispatch])
-
-	const formatData = () => {
-		const formattedStock = stock.results.map((stockObj: any) => {
-			const { o, c, h, l, v, vw, t, n } = stockObj
-			const time = moment(t)
-			const stockObjectInAggregatedWindow = {
-				time,
-				open: o,
-				close: c,
-				highest: h,
-				lowest: l,
-				volume: v,
-				volumeWeightedAvgPrice: vw,
-				numberOfTransactionInRange: n
-			}
-			return stockObjectInAggregatedWindow
-		})
-
-		formattedStock.sort((a: any, b: any) => {
-			return a.time - b.time
-		})
-		// rename the variables
-		const openPriceArr = formattedStock.map((s: any) => s.open)
-		// format time
-		const timeArr = formattedStock.map((t: any) => t.time)
-		return { open: openPriceArr, time:timeArr }
-	}
-
-	const createGradient = (canvas:any) => {
-		const ctx = canvas.getContext('2d')
-		const gradient = ctx.createLinearGradient(0, 0, 100, 100);
-
-		return {ctx, gradient} 
-	}
-	const configureGraph = (canvas:any) => {
-		const { open, time } = formatData()
-		const { ctx, gradient } = createGradient(canvas)
-		
-		gradient.addColorStop(1, ' rgb(0,250,154, 0.3)')
-		ctx.fillStyle = gradient
-
-		const data = {
-			labels: time,
-			datasets: [{
-				label: stock.ticker,
-				backgroundColor: gradient,
-				borderColor: ' rgb(0,250,154)',
-				data: open,
-			}]
-		}
-		const options = {
-			scales: {
-				xAxes: [{
-					type: 'time',
-					time: {
-						unit: 'hour'
-					},
-					distribution: 'series',
-					bounds: 'ticks',
-  				ticks: {
-						autoSkip: true,
-						source: 'data',
-					}
-				}]
-			},
-			maintainAspectRatio: false,
-			responsive: true,
-			title: {
-				display: true,
-			},
-			legend: {
-				display: false
-			},
-		}
-		return { data, options}
-	}
-
+		dispatch(getPolygonAggregateStock());
+		dispatch(getPolygonDailyOpenClose());
+		dispatch(getPolygonTickerDetails());
+	}, [dispatch]);
 
 	const createGraph = () => {
-		const canvas = document.createElement('canvas')
-		const { data, options } = configureGraph(canvas)
+		const canvas = document.createElement("canvas");
+		const { data, options } = configureGraph(
+			canvas,
+			formatData,
+			stock,
+			false,
+			currentRange,
+			netGainLoss
+		);
 
 		return (
-			<Container className='graph' >
+			<Container className="graph p-0">
 				<Line data={data} options={options} />
 			</Container>
-		)
-	}
+		);
+	};
 
 	return (
 		<>
-			<section id='stock__summary' className={`d-flex flex-column ${loading  === false ? '' : 'justify-content-center'} flex-grow-1 flex-shrink-1`}>
-				{/* <StockHeader ticker={stock.ticker}/> */}
-				<StockGraphNav />
-				{stock.status ? createGraph() : <Spinner className='align-self-center'>Loading...</Spinner>}
-				<section className='stock-information-group container'>
-				{daily ?(
-					<Row>
-						<Col className='col-12 flex-row py-1 p-0' >
-							<Card className='flex-md-row'>	
-								<StockDetails details={daily} dir={'left'} />
-								<StockDetails details={daily} dir={'right'} />
-							</Card>
-						</Col>
-					</Row>) :
-				null}
+			<section
+				id="stock__summary"
+				className={`d-flex flex-column ${loading === false ? "" : "justify-content-center"
+					} flex-grow-1 flex-shrink-1`}
+			>
+				{stock?.status ? <StockHeader stock={stock} /> : null}
+				{stock?.status ? (
+					<>
+						{createGraph()}
+						<StockGraphNav />
+					</>
+				) : (
+					<Spinner className="align-self-center">Loading...</Spinner>
+				)}
+				<section className="about mt-5 py-3">
+					<h3>About</h3>
 				</section>
-				{/* {stock.status ? (<section>
-					<StockNews />
-				</section>): null} */}
+				<section className="description py-3">
+					{daily && tickerDetails ? tickerDetails.description : null}
+				</section>
+				<section className="stock-information-group container">
+					{daily && tickerDetails ? (
+						<Row>
+							<StockDetails
+								sd1={tickerDetails.ceo.toString()}
+								sd2={daily.open.toString()}
+								label1="CEO"
+								label2="Open"
+							/>
+							<StockDetails
+								sd1={tickerDetails.employees.toString()}
+								sd2={daily.close.toString()}
+								label1="Employees"
+								label2="Close"
+							/>
+							<StockDetails
+								sd1={tickerDetails.hq_address.toString()}
+								sd2={daily.high.toString()}
+								label1="Headquarters"
+								label2="High"
+							/>
+							<StockDetails
+								sd1={(tickerDetails.marketcap / 100000000000).toFixed(2) + "T"}
+								sd2={daily.low.toString()}
+								label1="Market Cap"
+								label2="Low"
+							/>
+						</Row>
+					) : null}
+				</section>
 			</section>
 		</>
-	)
-}
+	);
+};
+
+export default StockSummary;
