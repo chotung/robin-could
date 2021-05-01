@@ -35,7 +35,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setRange,
 					getPolygonAggregateStock,
-					// getStockInAggragateRange,
 					searchStock
 				);
 				setActive(0);
@@ -55,7 +54,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setRange,
 					getPolygonAggregateStock,
-					// getStockInAggragateRange,
 					searchStock
 				);
 				setActive(1);
@@ -75,7 +73,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setRange,
 					getPolygonAggregateStock,
-					// getStockInAggragateRange,
 					searchStock
 				);
 				setActive(2);
@@ -95,7 +92,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setRange,
 					getPolygonAggregateStock,
-					// getStockInAggragateRange,
 					searchStock
 				);
 				setActive(3);
@@ -115,7 +111,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setRange,
 					getPolygonAggregateStock,
-					// getStockInAggragateRange,
 					searchStock
 				);
 				setActive(4);
@@ -135,7 +130,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setRange,
 					getPolygonAggregateStock,
-					// getStockInAggragateRange,
 					searchStock
 				);
 				setActive(5);
@@ -155,7 +149,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setRange,
 					getPolygonAggregateStock,
-					// getStockInAggragateRange,
 					searchStock
 				);
 				setActive(6);

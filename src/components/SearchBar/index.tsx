@@ -8,7 +8,6 @@ import {
 	getPolygonDailyOpenClose,
 	getPolygonTickerDetails,
 } from "../../clients/polygon";
-import AsyncSelect from 'react-select/async';
 
 type OptionType = {
 	value: string;
@@ -24,8 +23,7 @@ export default function SearchBar(): ReactElement {
 	const [option, setOption] = useState<ValueType<OptionType, false>>(null);
 	const dispatch = useDispatch();
 
-	// const handleChange = (option: ValueType<OptionType, false>) => {
-	const handleChange = (option: any) => {
+	const handleChange = (option: ValueType<OptionType, false>) => {
 		setOption(option);
 		dispatch(getPolygonAggregateStock(undefined, option?.value));
 		dispatch(getPolygonDailyOpenClose(option?.value));
