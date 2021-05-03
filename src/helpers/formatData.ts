@@ -71,7 +71,7 @@ export const adjustRange = (
   dispatch: any,
   setRange: any,
   getStockInAggragateRange: any,
-  stock: any
+  stock: string
 ): void => {
   const stockObjectOptions: any = {
     searchStock: "AAPL",

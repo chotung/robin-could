@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-import { Jumbotron } from "reactstrap"
-
-interface Props {
-	ticker:string
-}
-
-export default function StockHeader(props:Props) {
-	return (
-		<section>
-			<Jumbotron fluid>
-				color tab
-				<h1>{props.ticker}</h1>
-				PRice 10000
-				price change %
-			</Jumbotron>
-		</section>
-	)
-}
-=======
 import { ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { Jumbotron } from "reactstrap";
@@ -68,4 +48,3 @@ const StockHeader = (props: Props): ReactElement => {
 };
 
 export default StockHeader;
->>>>>>> feature/charts
