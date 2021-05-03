@@ -1,8 +1,9 @@
 import { useState, ReactElement } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 // import Select from "react-select";
 import Select, { ValueType } from 'react-select';
 import { useDispatch } from "react-redux";
-import { Container } from "reactstrap";
+import { Container, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label } from "reactstrap";
 import {
 	getPolygonAggregateStock,
 	getPolygonDailyOpenClose,
@@ -57,13 +58,21 @@ export default function SearchBar(): ReactElement {
 	return (
 		<>
 			<Container>
-				<Select
-					placeholder="Search"
-					value={option}
-					onChange={handleChange}
-					options={options}
-				/>
-				{/* <AsyncSelect placeholder="Search" defaultOptions={options} loadOptions={promiseOptions} value={null} onChange={handleChange} /> */}
+				<FormGroup>
+					<InputGroup>
+						<Input
+							type="search"
+							name="search"
+							id="exampleSearch"
+							placeholder="Enter Ticker Symbol... " />
+
+						<InputGroupAddon addonType="append">
+							<InputGroupText>
+								<FontAwesomeIcon icon={["fas", "search"]} />
+							</InputGroupText>
+						</InputGroupAddon>
+					</InputGroup>
+				</FormGroup>
 
 			</Container>
 		</>

@@ -2,9 +2,14 @@ import "./App.css";
 import StockSummary from "./pages/StockSummary";
 import SearchBar from "./components/SearchBar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { library } from "@fortawesome/fontawesome-svg-core"
+import { fas } from "@fortawesome/free-solid-svg-icons"
+
 // import LiveFeedPage from "./pages/LiveFeedPage";
 
 const App: React.FC = () => {
+	library.add(fas)
+
 	return (
 		<div>
 			<Router>
