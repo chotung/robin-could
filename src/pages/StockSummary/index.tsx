@@ -1,9 +1,7 @@
 import "./index.css";
 import { useEffect } from "react";
 import { Line } from "react-chartjs-2";
-import {
-	stockSelector
-} from "../../reducers/stocks/StockSlice";
+import { stockSelector } from "../../reducers/stocks/StockSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, Row, Spinner } from "reactstrap";
 import StockHeader from "../../components/StockHeader";
@@ -11,37 +9,31 @@ import StockDetails from "../../components/StockDetails";
 import StockGraphNav from "../../components/StockGraphNav";
 import { formatData } from "../../helpers/formatData";
 import { configureGraph } from "../../helpers/graphHelper";
-import {
-	getPolygonAggregateStock,
-	getPolygonDailyOpenClose,
-	getPolygonTickerDetails,
-} from "../../clients/polygon";
-
+import { twelveDataTimeSeries } from "../../clients/twelveData";
 const StockSummary: React.FC = () => {
 	const dispatch = useDispatch();
 	const {
-		tickerDetails,
-		stock,
-		currentRange,
-		daily,
+		// tickerDetails,
+		TwelveDataStockTimeSeries,
+		// currentRange,
+		// daily,
 		loading,
 		netGainLoss,
 	} = useSelector(stockSelector);
 
 	useEffect(() => {
-		dispatch(getPolygonAggregateStock());
-		dispatch(getPolygonDailyOpenClose());
-		dispatch(getPolygonTickerDetails());
+		dispatch(twelveDataTimeSeries());
 	}, [dispatch]);
+
 
 	const createGraph = () => {
 		const canvas = document.createElement("canvas");
 		const { data, options } = configureGraph(
 			canvas,
 			formatData,
-			stock,
+			TwelveDataStockTimeSeries,
 			false,
-			currentRange,
+			TwelveDataStockTimeSeries.meta.interval,
 			netGainLoss
 		);
 
@@ -59,8 +51,8 @@ const StockSummary: React.FC = () => {
 				className={`d-flex flex-column ${loading === false ? "" : "justify-content-center"
 					} flex-grow-1 flex-shrink-1`}
 			>
-				{stock?.status ? <StockHeader stock={stock} /> : null}
-				{stock?.status ? (
+				{TwelveDataStockTimeSeries?.status ? <StockHeader stock={TwelveDataStockTimeSeries} /> : null}
+				{TwelveDataStockTimeSeries?.status ? (
 					<>
 						{createGraph()}
 						<StockGraphNav />
@@ -71,10 +63,10 @@ const StockSummary: React.FC = () => {
 				<section className="about mt-5 py-3">
 					<h3>About</h3>
 				</section>
-				<section className="description py-3">
+				{/* <section className="description py-3">
 					{daily && tickerDetails ? tickerDetails.description : null}
-				</section>
-				<section className="stock-information-group container">
+				</section> */}
+				{/* <section className="stock-information-group container">
 					{daily && tickerDetails ? (
 						<Row>
 							<StockDetails
@@ -103,7 +95,7 @@ const StockSummary: React.FC = () => {
 							/>
 						</Row>
 					) : null}
-				</section>
+				</section> */}
 			</section>
 		</>
 	);
