@@ -1,22 +1,29 @@
 import { adjustRange } from "../../helpers/formatData";
 import { useDispatch, useSelector } from "react-redux";
-import { setInterval, setNetGainLoss, stockSelector } from "../../reducers/stocks/StockSlice";
+import {
+	setInterval,
+	setNetGainLoss,
+	stockSelector,
+} from "../../reducers/stocks/StockSlice";
 import { Button, NavItem } from "reactstrap";
 import "./index.css";
 import { ReactElement } from "react";
 import { NavTabs } from "./types";
-import { twelveDataQuote, twelveDataTimeSeries } from "../../clients/twelveData";
+import {
+	twelveDataQuote,
+	twelveDataTimeSeries,
+} from "../../clients/twelveData";
 import { calculateNetDiff } from "../../helpers/calculateNetDiff";
 
 const GraphNavItem = (props: NavTabs): ReactElement => {
 	const dispatch = useDispatch();
 	const { TwelveDataStockTimeSeries, netGainLoss } = useSelector(stockSelector);
 	const { range, setActive, isActive } = props;
-	const { values } = TwelveDataStockTimeSeries
+	const { values } = TwelveDataStockTimeSeries;
 	const first = parseFloat(values[values.length - 1].open);
 	const latestPrice = parseFloat(values[0].open);
 	const gainLoss = calculateNetDiff(latestPrice, first);
-	const net = parseFloat(netGainLoss)
+	const net = parseFloat(netGainLoss);
 	const changeRange = (e: React.MouseEvent<Element, MouseEvent>) => {
 		const target = e.target as HTMLElement;
 		const range: string = target.innerText;
@@ -41,9 +48,9 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 			// 		searchStock
 			// 	);
 			case "1D":
-				dispatch(setNetGainLoss(gainLoss))
-				interval = "1min"
-				outputSize = "390"
+				dispatch(setNetGainLoss(gainLoss));
+				interval = "1min";
+				outputSize = "390";
 				adjustRange(
 					interval,
 					outputSize,
@@ -57,9 +64,9 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 				break;
 
 			case "5D":
-				dispatch(setNetGainLoss(gainLoss))
-				interval = "5min"
-				outputSize = "390"
+				dispatch(setNetGainLoss(gainLoss));
+				interval = "5min";
+				outputSize = "390";
 				adjustRange(
 					interval,
 					outputSize,
@@ -67,15 +74,14 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
-
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(1);
 				break;
 
 			case "1M":
-				interval = "1h"
-				outputSize = "731"
+				interval = "1h";
+				outputSize = "731";
 				adjustRange(
 					interval,
 					outputSize,
@@ -83,15 +89,14 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
-
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(2);
 				break;
 
 			case "3M":
-				interval = "1h"
-				outputSize = "2192"
+				interval = "1h";
+				outputSize = "2192";
 				adjustRange(
 					interval,
 					outputSize,
@@ -99,15 +104,14 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
-
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(3);
 				break;
 
 			case "1Y":
-				interval = "1day"
-				outputSize = "365"
+				interval = "1day";
+				outputSize = "365";
 				adjustRange(
 					interval,
 					outputSize,
@@ -115,12 +119,11 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
-
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(4);
 				break;
-			// If I had the paid version of the api 
+			// If I had the paid version of the api
 			// case "5Y":
 			// 	interval = "5min"
 			// 	outputSize = "390"

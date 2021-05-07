@@ -10,40 +10,39 @@ import { useSelector, useDispatch } from "react-redux";
 // import { getPolygonLiveFeed } from "../../clients/polygon";
 
 const LiveFeedPage = () => {
-	const dispatch = useDispatch();
-	// const { liveFeed } = useSelector(stockSelector);
-	useEffect(() => {
-		// dispatch(getPolygonLiveFeed());
+  const dispatch = useDispatch();
+  // const { liveFeed } = useSelector(stockSelector);
+  useEffect(() => {
+    // dispatch(getPolygonLiveFeed());
+    // return () => {
+    // }
+  }, []);
 
-		// return () => {
-		// }
-	}, []);
+  // const createGraph = () => {
+  // if (liveFeed !== undefined) {
+  //   const canvas = document.createElement("canvas");
+  //   const { data, options } = configureGraph(
+  //     canvas,
+  //     formatData,
+  //     liveFeed,
+  //     true,
+  //     undefined,
+  //     undefined
+  //   );
 
-	// const createGraph = () => {
-	// if (liveFeed !== undefined) {
-	//   const canvas = document.createElement("canvas");
-	//   const { data, options } = configureGraph(
-	//     canvas,
-	//     formatData,
-	//     liveFeed,
-	//     true,
-	//     undefined,
-	//     undefined
-	//   );
+  // 	return (
+  // 		<Container className="graph p-0">
+  // 			{/* <Line data={data} options={options} /> */}
+  // 		</Container>
+  // 	);
+  // }
+  // };
 
-	// 	return (
-	// 		<Container className="graph p-0">
-	// 			{/* <Line data={data} options={options} /> */}
-	// 		</Container>
-	// 	);
-	// }
-	// };
-
-	return (
-		<div className="App">
-			{/* <header className="App-header">{createGraph()}</header> */}
-		</div>
-	);
+  return (
+    <div className="App">
+      {/* <header className="App-header">{createGraph()}</header> */}
+    </div>
+  );
 };
 
 export default LiveFeedPage;
