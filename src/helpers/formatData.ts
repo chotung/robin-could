@@ -93,6 +93,7 @@ export const adjustRange = (
   dispatch: any,
   setInterval: any,
   twelveDataTimeSeries: any,
+  twelveDataQuote: any,
   stock: any
 ): void => {
   const stockObjectOptions: any = {
@@ -104,5 +105,8 @@ export const adjustRange = (
   dispatch(setInterval(interval));
   dispatch(
     twelveDataTimeSeries(stockObjectOptions, stockObjectOptions.searchSymbol)
+  );
+  dispatch(
+    twelveDataQuote(stockObjectOptions, stockObjectOptions.searchSymbol)
   );
 };

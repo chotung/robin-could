@@ -9,7 +9,7 @@ import StockDetails from "../../components/StockDetails";
 import StockGraphNav from "../../components/StockGraphNav";
 import { formatData } from "../../helpers/formatData";
 import { configureGraph } from "../../helpers/graphHelper";
-import { twelveDataTimeSeries } from "../../clients/twelveData";
+import { twelveDataTimeSeries, twelveDataQuote } from "../../clients/twelveData";
 const StockSummary: React.FC = () => {
 	const dispatch = useDispatch();
 	const {
@@ -23,6 +23,7 @@ const StockSummary: React.FC = () => {
 
 	useEffect(() => {
 		dispatch(twelveDataTimeSeries());
+		dispatch(twelveDataQuote())
 	}, [dispatch]);
 
 

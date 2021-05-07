@@ -5,7 +5,7 @@ import { Button, NavItem } from "reactstrap";
 import "./index.css";
 import { ReactElement } from "react";
 import { NavTabs } from "./types";
-import { twelveDataTimeSeries } from "../../clients/twelveData";
+import { twelveDataQuote, twelveDataTimeSeries } from "../../clients/twelveData";
 import { calculateNetDiff } from "../../helpers/calculateNetDiff";
 
 const GraphNavItem = (props: NavTabs): ReactElement => {
@@ -17,7 +17,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 	const latestPrice = parseFloat(values[0].open);
 	const gainLoss = calculateNetDiff(latestPrice, first);
 	const net = parseFloat(netGainLoss)
-	console.log(net);
 	const changeRange = (e: React.MouseEvent<Element, MouseEvent>) => {
 		const target = e.target as HTMLElement;
 		const range: string = target.innerText;
@@ -42,7 +41,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 			// 		searchStock
 			// 	);
 			case "1D":
-				console.log(net);
 				dispatch(setNetGainLoss(gainLoss))
 				interval = "1min"
 				outputSize = "390"
@@ -52,13 +50,13 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setInterval,
 					twelveDataTimeSeries,
+					twelveDataQuote,
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(0);
 				break;
 
 			case "5D":
-				console.log(net);
 				dispatch(setNetGainLoss(gainLoss))
 				interval = "5min"
 				outputSize = "390"
@@ -68,6 +66,8 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setInterval,
 					twelveDataTimeSeries,
+					twelveDataQuote,
+
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(1);
@@ -82,6 +82,8 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setInterval,
 					twelveDataTimeSeries,
+					twelveDataQuote,
+
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(2);
@@ -96,6 +98,8 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setInterval,
 					twelveDataTimeSeries,
+					twelveDataQuote,
+
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(3);
@@ -110,6 +114,8 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					dispatch,
 					setInterval,
 					twelveDataTimeSeries,
+					twelveDataQuote,
+
 					TwelveDataStockTimeSeries.meta.symbol
 				);
 				setActive(4);

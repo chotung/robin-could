@@ -5,6 +5,7 @@ import {
   setLoading,
   setTimeSeries,
   initialState,
+  setQuote,
 } from "../../../reducers/stocks/StockSlice";
 import { NewStockParametersForTimeSeries } from "../../../reducers/stocks/types";
 import { API_KEY } from "../twelveDataApiKey";
@@ -45,4 +46,29 @@ const twelveDataTimeSeries = (
   };
 };
 
-export { twelveDataTimeSeries };
+const twelveDataQuote = (
+  stock?: NewStockParametersForTimeSeries,
+  search?: string
+): AppThunk => {
+  const interval = stock
+    ? stock.interval
+    : initialState.TwelveDataQuote.interval;
+  const searchTicker = search
+    ? search
+    : initialState.TwelveDataStockTimeSeries.meta.symbol;
+
+  return async (dispatch) => {
+    const URL = `${BASE_URL}/quote?symbol=${searchTicker}&interval=${interval}&apikey=${API_KEY}`;
+    const res = await axios.get(URL);
+    dispatch(setLoading(true));
+    dispatch(setQuote(res.data));
+    try {
+      dispatch(setLoading(false));
+    } catch (error) {
+      dispatch(setErrors(error));
+      dispatch(setLoading(false));
+    }
+  };
+};
+
+export { twelveDataTimeSeries, twelveDataQuote };

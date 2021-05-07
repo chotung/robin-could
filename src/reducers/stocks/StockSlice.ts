@@ -1,6 +1,10 @@
 // import moment from "moment";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { StockState, TwelveDataStockTimeSeries } from "./types";
+import {
+  StockState,
+  TwelveDataStockTimeSeries,
+  TwelveDataStockQuote,
+} from "./types";
 // const currentDate = moment().format("YYYY-MM-D");
 
 // Have to build around weekends
@@ -38,9 +42,36 @@ export const initialState: StockState = {
     values: [],
     status: "",
   },
+  TwelveDataQuote: {
+    interval: "1day",
+    symbol: "",
+    name: "",
+    exchange: "",
+    currency: "",
+    datetime: "",
+    open: "",
+    high: "",
+    low: "",
+    close: "",
+    volume: "",
+    previous_close: "",
+    change: "",
+    percent_change: "",
+    average_volume: "",
+    fifty_two_week: {
+      low: "",
+      high: "",
+      low_change: "",
+      high_change: "",
+      low_change_percent: "",
+      high_change_percent: "",
+      range: "",
+    },
+  },
   loading: false,
   errors: "",
   netGainLoss: "",
+  previousDayData: "",
   outputSize: 390,
 };
 
@@ -66,6 +97,13 @@ const stockSlice = createSlice({
     setInterval: (state, { payload }: PayloadAction<string>) => {
       state.TwelveDataStockTimeSeries.meta.interval = payload;
     },
+    setQuoteInterval: (state, { payload }: PayloadAction<string>) => {
+      state.TwelveDataQuote.interval = payload;
+    },
+
+    setQuote: (state, { payload }: PayloadAction<TwelveDataStockQuote>) => {
+      state.TwelveDataQuote = { ...state.TwelveDataQuote, ...payload };
+    },
 
     setSearchStock: (state, { payload }: PayloadAction<string>) => {
       state.TwelveDataStockTimeSeries.meta.symbol = payload;
@@ -81,14 +119,10 @@ export const {
   setLoading,
   setErrors,
   setTimeSeries,
-  // setStock,
-  // setFinancials,
-  // setDaily,
   setInterval,
   setSearchStock,
   setNetGainLoss,
-  // setTickerDetails,
-  // addToLiveFeed,
+  setQuote,
 } = stockSlice.actions;
 export default stockSlice.reducer;
 export const stockSelector = (state: { stockStore: StockState }): StockState =>

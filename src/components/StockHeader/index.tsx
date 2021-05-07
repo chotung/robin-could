@@ -1,9 +1,9 @@
 import { ReactElement, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Jumbotron } from "reactstrap";
 import { calculateNetDiff } from "../../helpers/calculateNetDiff";
 import {
-	setNetGainLoss,
+	setNetGainLoss, stockSelector,
 } from "../../reducers/stocks/StockSlice";
 import "./index.css";
 import {
@@ -16,6 +16,7 @@ type StockHeaderProps = {
 
 const StockHeader = (props: StockHeaderProps): ReactElement => {
 	const dispatch = useDispatch();
+	const { TwelveDataQuote } = useSelector(stockSelector)
 	const { values, meta } = props.stock
 	const { symbol } = meta
 	const first = parseFloat(values[values.length - 1].open);
@@ -37,7 +38,9 @@ const StockHeader = (props: StockHeaderProps): ReactElement => {
             {latestPrice}
 					</h2>
 					<p id="percentage__change">
-						${(latestPrice - first).toFixed(2)} ({gainLoss}%)
+						{/* Not sure if data is correct */}
+						${parseFloat(TwelveDataQuote.change).toFixed(2)}({parseFloat(TwelveDataQuote.percent_change).toFixed(2)}%)
+						{/* ${(latestPrice - first).toFixed(2)} ({gainLoss}%) */}
 					</p>
 				</div>
 			</Jumbotron>

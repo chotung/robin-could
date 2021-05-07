@@ -6,11 +6,42 @@ interface TwelveDataStockTimeSeries {
   status: string;
 }
 
+interface TwelveDataStockQuote {
+  interval: string;
+  symbol: string;
+  name: string;
+  exchange: string;
+  currency: string;
+  datetime: string;
+  open: string;
+  high: string;
+  low: string;
+  close: string;
+  volume: string;
+  previous_close: string;
+  change: string;
+  percent_change: string;
+  average_volume: string;
+  fifty_two_week: FiftyTwoWeek;
+}
+
+type FiftyTwoWeek = {
+  low: string;
+  high: string;
+  low_change: string;
+  high_change: string;
+  low_change_percent: string;
+  high_change_percent: string;
+  range: string;
+};
+
 interface StockState {
   TwelveDataStockTimeSeries: TwelveDataStockTimeSeries;
+  TwelveDataQuote: TwelveDataStockQuote;
   loading: boolean;
   errors: string;
   netGainLoss: string;
+  previousDayData: string;
   outputSize: number;
 }
 
@@ -43,6 +74,7 @@ export {
   TwelveDataStockTimeSeries,
   TimeSeries,
   NewStockParametersForTimeSeries,
+  TwelveDataStockQuote,
 };
 
 // POLYGON API

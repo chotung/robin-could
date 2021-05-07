@@ -1,2 +1,5 @@
-import { twelveDataTimeSeries } from "./tweleDataClient/twelveDataClient";
-export { twelveDataTimeSeries };
+import {
+  twelveDataTimeSeries,
+  twelveDataQuote,
+} from "./tweleDataClient/twelveDataClient";
+export { twelveDataTimeSeries, twelveDataQuote };
