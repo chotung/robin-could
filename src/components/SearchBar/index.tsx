@@ -14,23 +14,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AsyncTypeahead } from "react-bootstrap-typeahead"
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import axios from "axios";
+import { twelveDataQuote, twelveDataTimeSeries } from "../../clients/twelveData";
 
-type OptionType = {
-	value: string;
+type TickerSearchOption = {
 	label: string;
-};
-const options: OptionType[] = [
-	{ value: "AAPL", label: "AAPL/Apple" },
-	{ value: "MSFT", label: "MSFT/Microsoft Corporation" },
-	{ value: "GOOG", label: "GOOG/Alphabet Inc." },
-];
-
+	instrumentName: string;
+}
 
 export default function SearchBar(): ReactElement {
 	const [isLoading, setIsLoading] = useState(false);
 	const [options, setOptions] = useState([]);
+	const [val, setValue] = useState("")
 	// const [option, setOption] = useState<ValueType<OptionType, false>>(null);
-	// const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	// const handleChange = (option: ValueType<OptionType, false>) => {
 	// const handleChange = (option: any) => {
@@ -52,6 +48,20 @@ export default function SearchBar(): ReactElement {
 		setIsLoading(false)
 	}
 	const filterBy = () => true;
+	const handleChange = (e: any,) => {
+		// stock: TickerSearchOption[]
+		if (e.key === 'Enter') {
+			console.log("Enter was press");
+			dispatch(twelveDataTimeSeries(undefined, e.target.value))
+			dispatch(twelveDataQuote(undefined, e.target.value))
+		}
+	}
+
+	const handleSelectOption = (e: any) => {
+		const selectedTickerSymbol = e.target.firstChild.data;
+		dispatch(twelveDataTimeSeries(undefined, selectedTickerSymbol))
+		dispatch(twelveDataQuote(undefined, selectedTickerSymbol))
+	}
 	return (
 		<>
 			<Container>
@@ -61,13 +71,23 @@ export default function SearchBar(): ReactElement {
 					isLoading={isLoading}
 					minLength={1}
 					onSearch={handleSearch}
+					onKeyDown={handleChange}
 					options={options}
 					placeholder="Search for Company"
-					renderMenuItemChildren={(option: any, props) => (
-						<>
-							<span>{option.label}/{option.instrumentName}</span>
-						</>
-					)}
+					renderMenuItemChildren={(option: any, props) => {
+						return (
+							<>
+								<div onClick={handleSelectOption}>
+									<span>{option.label}/{option.instrumentName}</span>
+								</div>
+							</>
+						)
+					}}
+				// renderMenuItemChildren={(option: any, props) => (
+				// 	<>
+				// 		<span>{option.label}/{option.instrumentName}</span>
+				// 	</>
+				// )}
 				/>
 				{/* <FormGroup onSubmit={requestFromAPI}>
 					<InputGroup>
