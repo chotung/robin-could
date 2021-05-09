@@ -46,6 +46,7 @@ const StockSummary: React.FC = () => {
 	};
 
 	const { symbol, name, exchange, currency, datetime, open, high, close, low, volume, previous_close, change, percent_change, average_volume, fifty_two_week } = TwelveDataQuoteState
+
 	return (
 		<>
 			<section
@@ -53,10 +54,10 @@ const StockSummary: React.FC = () => {
 				className={`d-flex flex-column ${loading === false ? "" : "justify-content-center"
 					} flex-grow-1 flex-shrink-1`}
 			>
-				{TwelveDataStockTimeSeries?.status !== "error" ? (
+				{TwelveDataStockTimeSeries?.status !== "" ? (
 					<StockHeader stock={TwelveDataStockTimeSeries} />
 				) : null}
-				{TwelveDataStockTimeSeries?.status !== "error" ? (
+				{TwelveDataStockTimeSeries?.status !== "" ? (
 					<>
 						{createGraph()}
 						<StockGraphNav />
