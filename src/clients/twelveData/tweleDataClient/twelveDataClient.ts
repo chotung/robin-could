@@ -52,7 +52,7 @@ const twelveDataQuote = (
 ): AppThunk => {
   const interval = stock
     ? stock.interval
-    : initialState.TwelveDataQuote.interval;
+    : initialState.TwelveDataQuoteState.interval;
   const searchTicker = search
     ? search
     : initialState.TwelveDataStockTimeSeries.meta.symbol;

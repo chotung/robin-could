@@ -37,7 +37,7 @@ type FiftyTwoWeek = {
 
 interface StockState {
   TwelveDataStockTimeSeries: TwelveDataStockTimeSeries;
-  TwelveDataQuote: TwelveDataStockQuote;
+  TwelveDataQuoteState: TwelveDataStockQuote;
   loading: boolean;
   errors: string;
   netGainLoss: string;

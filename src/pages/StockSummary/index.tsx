@@ -10,101 +10,99 @@ import StockGraphNav from "../../components/StockGraphNav";
 import { formatData } from "../../helpers/formatData";
 import { configureGraph } from "../../helpers/graphHelper";
 import {
-  twelveDataTimeSeries,
-  twelveDataQuote,
+	twelveDataTimeSeries,
+	twelveDataQuote,
 } from "../../clients/twelveData";
 const StockSummary: React.FC = () => {
-  const dispatch = useDispatch();
-  const {
-    // tickerDetails,
-    TwelveDataStockTimeSeries,
-    // currentRange,
-    // daily,
-    loading,
-    netGainLoss,
-  } = useSelector(stockSelector);
+	const dispatch = useDispatch();
+	const {
+		TwelveDataStockTimeSeries,
+		TwelveDataQuoteState,
+		loading,
+		netGainLoss,
+	} = useSelector(stockSelector);
 
-  useEffect(() => {
-    dispatch(twelveDataTimeSeries());
-    dispatch(twelveDataQuote());
-  }, [dispatch]);
+	useEffect(() => {
+		// dispatch(twelveDataTimeSeries());
+		// dispatch(twelveDataQuote());
+	}, [dispatch]);
 
-  const createGraph = () => {
-    const canvas = document.createElement("canvas");
-    const { data, options } = configureGraph(
-      canvas,
-      formatData,
-      TwelveDataStockTimeSeries,
-      false,
-      TwelveDataStockTimeSeries.meta.interval,
-      netGainLoss
-    );
+	const createGraph = () => {
+		const canvas = document.createElement("canvas");
+		const { data, options } = configureGraph(
+			canvas,
+			formatData,
+			TwelveDataStockTimeSeries,
+			false,
+			TwelveDataStockTimeSeries.meta.interval,
+			netGainLoss
+		);
 
-    return (
-      <Container className="graph p-0">
-        <Line data={data} options={options} />
-      </Container>
-    );
-  };
+		return (
+			<Container className="graph p-0">
+				<Line data={data} options={options} />
+			</Container>
+		);
+	};
 
-  return (
-    <>
-      <section
-        id="stock__summary"
-        className={`d-flex flex-column ${
-          loading === false ? "" : "justify-content-center"
-        } flex-grow-1 flex-shrink-1`}
-      >
-        {TwelveDataStockTimeSeries?.status ? (
-          <StockHeader stock={TwelveDataStockTimeSeries} />
-        ) : null}
-        {TwelveDataStockTimeSeries?.status ? (
-          <>
-            {createGraph()}
-            <StockGraphNav />
-          </>
-        ) : (
-          <Spinner className="align-self-center">Loading...</Spinner>
-        )}
-        <section className="about mt-5 py-3">
-          <h3>About</h3>
-        </section>
-        {/* <section className="description py-3">
-					{daily && tickerDetails ? tickerDetails.description : null}
-				</section> */}
-        {/* <section className="stock-information-group container">
-					{daily && tickerDetails ? (
-						<Row>
-							<StockDetails
-								sd1={tickerDetails.ceo.toString()}
-								sd2={daily.open.toString()}
-								label1="CEO"
-								label2="Open"
-							/>
-							<StockDetails
-								sd1={tickerDetails.employees.toString()}
-								sd2={daily.close.toString()}
-								label1="Employees"
-								label2="Close"
-							/>
-							<StockDetails
-								sd1={tickerDetails.hq_address.toString()}
-								sd2={daily.high.toString()}
-								label1="Headquarters"
-								label2="High"
-							/>
-							<StockDetails
-								sd1={(tickerDetails.marketcap / 100000000000).toFixed(2) + "T"}
-								sd2={daily.low.toString()}
-								label1="Market Cap"
-								label2="Low"
-							/>
-						</Row>
-					) : null}
-				</section> */}
-      </section>
-    </>
-  );
+	const { symbol, name, exchange, currency, datetime, open, high, close, low, volume, previous_close, change, percent_change, average_volume, fifty_two_week } = TwelveDataQuoteState
+	return (
+		<>
+			<section
+				id="stock__summary"
+				className={`d-flex flex-column ${loading === false ? "" : "justify-content-center"
+					} flex-grow-1 flex-shrink-1`}
+			>
+				{TwelveDataStockTimeSeries?.status !== "error" ? (
+					<StockHeader stock={TwelveDataStockTimeSeries} />
+				) : null}
+				{TwelveDataStockTimeSeries?.status !== "error" ? (
+					<>
+						{createGraph()}
+						<StockGraphNav />
+					</>
+				) : (
+					<Spinner className="align-self-center">Loading...</Spinner>
+				)}
+				<section className="about mt-5 py-3">
+					<h3>About</h3>
+				</section>
+				<section className="description py-3">
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, animi!
+					{/* {daily && tickerDetails ? tickerDetails.description : null} */}
+				</section>
+				<section className="stock-information-group container">
+					{TwelveDataQuoteState ? null : 'something'}
+					<Row>
+						<StockDetails
+							sd1={name}
+							sd2={exchange}
+							label1="Name"
+							label2="Exchange"
+						/>
+						<StockDetails
+							sd1={open}
+							sd2={close}
+							label1="Open"
+							label2="Close"
+						/>
+						<StockDetails
+							sd1={high}
+							sd2={low}
+							label1="High"
+							label2="Low"
+						/>
+						<StockDetails
+							sd1={volume}
+							sd2={average_volume}
+							label1="Volume"
+							label2="Average Volume"
+						/>
+					</Row>
+				</section>
+			</section>
+		</>
+	);
 };
 
 export default StockSummary;

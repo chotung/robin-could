@@ -42,7 +42,7 @@ export const initialState: StockState = {
     values: [],
     status: "",
   },
-  TwelveDataQuote: {
+  TwelveDataQuoteState: {
     interval: "1day",
     symbol: "",
     name: "",
@@ -98,11 +98,14 @@ const stockSlice = createSlice({
       state.TwelveDataStockTimeSeries.meta.interval = payload;
     },
     setQuoteInterval: (state, { payload }: PayloadAction<string>) => {
-      state.TwelveDataQuote.interval = payload;
+      state.TwelveDataQuoteState.interval = payload;
     },
 
     setQuote: (state, { payload }: PayloadAction<TwelveDataStockQuote>) => {
-      state.TwelveDataQuote = { ...state.TwelveDataQuote, ...payload };
+      state.TwelveDataQuoteState = {
+        ...state.TwelveDataQuoteState,
+        ...payload,
+      };
     },
 
     setSearchStock: (state, { payload }: PayloadAction<string>) => {
