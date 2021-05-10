@@ -1,8 +1,33 @@
 import moment from "moment";
 // import { Stock, Trade } from "../reducers/stocks/types";
+import {
+  TwelveDataStockTimeSeries,
+  TimeSeries,
+} from "../reducers/stocks/types";
 
+type NewStockDataRequestParameters = TwelveDataStockTimeSeries;
 
-export const formatData = (stock: any, range?: string, live?: boolean): any=> {
+export const formatData = (
+  stock: NewStockDataRequestParameters,
+  api: string,
+  range?: string,
+  live?: boolean
+): any => {
+  if (api === "twelveData") {
+    const open = stock.values.map((timeSeries: TimeSeries) => {
+      return timeSeries.open;
+    });
+    const time = stock.values.map((timeSeries: TimeSeries) => {
+      const time = moment(timeSeries.datetime);
+      return time;
+    });
+    return { open, time };
+  } else {
+    formatPolygonData(stock, range, live);
+  }
+};
+
+const formatPolygonData = (stock: any, range?: string, live?: boolean) => {
   if (stock.status === "" && stock.results.length === 0) {
     return { open: [], price: [] };
   }
@@ -63,26 +88,25 @@ export const formatData = (stock: any, range?: string, live?: boolean): any=> {
 };
 
 export const adjustRange = (
-  multiplier: number,
-  timeSpan: string,
-  fromDate: string,
-  toDate: string,
-  range: string,
+  interval: string,
+  outputSize: string,
   dispatch: any,
-  setRange: any,
-  getStockInAggragateRange: any,
-  stock: string
+  setInterval: any,
+  twelveDataTimeSeries: any,
+  twelveDataQuote: any,
+  stock: any
 ): void => {
   const stockObjectOptions: any = {
-    searchStock: "AAPL",
+    searchSymbol: "AAPL",
   };
-  stockObjectOptions.searchStock = stock;
-  stockObjectOptions.multiplier = multiplier;
-  stockObjectOptions.timeSpan = timeSpan;
-  stockObjectOptions.fromDate = fromDate;
-  stockObjectOptions.toDate = toDate;
-  dispatch(setRange(range));
+  stockObjectOptions.searchSymbol = stock;
+  stockObjectOptions.interval = interval;
+  stockObjectOptions.outputSize = outputSize;
+  dispatch(setInterval(interval));
   dispatch(
-    getStockInAggragateRange(stockObjectOptions, stockObjectOptions.searchStock)
+    twelveDataTimeSeries(stockObjectOptions, stockObjectOptions.searchSymbol)
+  );
+  dispatch(
+    twelveDataQuote(stockObjectOptions, stockObjectOptions.searchSymbol)
   );
 };

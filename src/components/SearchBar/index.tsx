@@ -1,80 +1,74 @@
 import { useState, ReactElement } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-// import Select from "react-select";
-import Select, { ValueType } from 'react-select';
 import { useDispatch } from "react-redux";
-import { Container, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label } from "reactstrap";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import "react-bootstrap-typeahead/css/Typeahead.css";
+import axios from "axios";
 import {
-	getPolygonAggregateStock,
-	getPolygonDailyOpenClose,
-	getPolygonTickerDetails,
-} from "../../clients/polygon";
+	twelveDataQuote,
+	twelveDataTimeSeries,
+} from "../../clients/twelveData";
 
-type OptionType = {
-	value: string;
+type TickerSearchOption = {
 	label: string;
-}
-const options: OptionType[] = [
-	{ value: "AAPL", label: "AAPL/Apple" },
-	{ value: "MSFT", label: "MSFT/Microsoft Corporation" },
-	{ value: "GOOG", label: "GOOG/Alphabet Inc." },
-];
+	instrumentName: string;
+};
 
 export default function SearchBar(): ReactElement {
-	const [option, setOption] = useState<ValueType<OptionType, false>>(null);
+	const [isLoading, setIsLoading] = useState(false);
+	const [options, setOptions] = useState([]);
 	const dispatch = useDispatch();
 
-	const handleChange = (option: ValueType<OptionType, false>) => {
-		setOption(option);
-		dispatch(getPolygonAggregateStock(undefined, option?.value));
-		dispatch(getPolygonDailyOpenClose(option?.value));
-		dispatch(getPolygonTickerDetails(option?.value));
+	const handleSearch = async (query: string) => {
+		setIsLoading(true);
+		const res = await axios(
+			`https://api.twelvedata.com/symbol_search?symbol=${query}`
+		);
+		const items = res.data.data;
+		const labels = items.map((item: any) => ({
+			label: item.symbol,
+			instrumentName: item.instrument_name,
+		}));
+		setOptions(labels);
+		setIsLoading(false);
+	};
+	const filterBy = () => true;
+
+	const handleChange = (e: any) => {
+		if (e.key === "Enter") {
+			console.log("Enter was press");
+			dispatch(twelveDataTimeSeries(undefined, e.target.value));
+			dispatch(twelveDataQuote(undefined, e.target.value));
+		}
 	};
 
-	// const filterStocks = (inputValue: string) => {
-	// 	return options.filter((option) => {
-	// 		if (option.value.toUpperCase().includes(inputValue.toUpperCase())) return option
-	// 	})
-	// }
-
-
-	// const promiseOptions = (inputValue: string) =>
-	// 	new Promise<any>(resolve => {
-	// 		setTimeout(() => {
-
-	// 			resolve(filterStocks(inputValue))
-	// 		}, 1000);
-	// 	}).then(res => {
-	// 		if (res.length === 0) {
-	// 			setTimeout(() => {
-	// 				const tickerSymbol = inputValue.toUpperCase()
-	// 				dispatch(getPolygonAggregateStock(undefined, tickerSymbol));
-	// 				// dispatch(getPolygonDailyOpenClose(tickerSymbol));
-	// 				// dispatch(getPolygonTickerDetails(tickerSymbol));
-	// 			}, 3000)
-	// 		}
-	// 	});
-
+	const handleSelectOption = (e: any) => {
+		const selectedTickerSymbol = e.target.firstChild.data;
+		dispatch(twelveDataTimeSeries(undefined, selectedTickerSymbol));
+		dispatch(twelveDataQuote(undefined, selectedTickerSymbol));
+	};
 	return (
 		<>
-			<Container>
-				<FormGroup>
-					<InputGroup>
-						<Input
-							type="search"
-							name="search"
-							id="exampleSearch"
-							placeholder="Enter Ticker Symbol... " />
-
-						<InputGroupAddon addonType="append">
-							<InputGroupText>
-								<FontAwesomeIcon icon={["fas", "search"]} />
-							</InputGroupText>
-						</InputGroupAddon>
-					</InputGroup>
-				</FormGroup>
-
-			</Container>
+			<AsyncTypeahead
+				filterBy={filterBy}
+				id="async-search"
+				isLoading={isLoading}
+				minLength={1}
+				onSearch={handleSearch}
+				onKeyDown={handleChange}
+				options={options}
+				placeholder="Search for Company"
+				renderMenuItemChildren={(option: TickerSearchOption) => {
+					return (
+						<>
+							<div onClick={handleSelectOption}>
+								<span>
+									{option.label}/{option.instrumentName}
+								</span>
+							</div>
+						</>
+					);
+				}}
+			/>
 		</>
 	);
 }

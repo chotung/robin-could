@@ -1,3 +1,7 @@
 header {
   background-color: #fff !important;
 }
+
+.App {
+	justify-content: center;
+}

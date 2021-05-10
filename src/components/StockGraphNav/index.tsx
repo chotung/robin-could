@@ -8,7 +8,7 @@ export default function StockGraphNav() {
 	const [active, setActive] = useState(0);
 
 	const createButtons = () => {
-		const ranges = ["1D", "5D", "1M", "3M", "1Y", "5Y", "YTD"];
+		const ranges = ["1D", "5D", "1M", "3M", "1Y"];
 		return ranges.map((range, i) => {
 			return (
 				<GraphNavigation

@@ -10,3 +10,15 @@
 .stock-card {
   border: 0 !important;
 }
+
+.wrapper {
+	justify-content: center;
+	height: 100vh !important;
+}
+
+.loading {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%);
+}

@@ -14,10 +14,8 @@ export const configureGraph = (
   range?: string,
   net?: any
 ) => {
-
-  const { open, time } = formatData(stock, range, live);
+  const { open, time } = formatData(stock, "twelveData", range, live);
   const { gradient } = createGradient(canvas);
-
   const data = {
     labels: time,
     datasets: [
@@ -73,5 +71,3 @@ export const configureGraph = (
   };
   return { data, options };
 };
-
-
