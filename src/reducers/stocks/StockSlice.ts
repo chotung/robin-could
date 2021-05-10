@@ -67,6 +67,7 @@ export const initialState: StockState = {
       high_change_percent: "",
       range: "",
     },
+    status: "",
   },
   loading: false,
   errors: "",

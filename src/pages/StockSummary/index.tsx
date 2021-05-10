@@ -23,8 +23,8 @@ const StockSummary: React.FC = () => {
 	} = useSelector(stockSelector);
 
 	useEffect(() => {
-		// dispatch(twelveDataTimeSeries());
-		// dispatch(twelveDataQuote());
+		dispatch(twelveDataTimeSeries());
+		dispatch(twelveDataQuote());
 	}, [dispatch]);
 
 	const createGraph = () => {
@@ -45,8 +45,23 @@ const StockSummary: React.FC = () => {
 		);
 	};
 
-	const { symbol, name, exchange, currency, datetime, open, high, close, low, volume, previous_close, change, percent_change, average_volume, fifty_two_week } = TwelveDataQuoteState
-
+	const {
+		symbol,
+		name,
+		exchange,
+		currency,
+		datetime,
+		open,
+		high,
+		close,
+		low,
+		volume,
+		previous_close,
+		change,
+		percent_change,
+		average_volume,
+		fifty_two_week,
+	} = TwelveDataQuoteState;
 	return (
 		<>
 			<section
@@ -54,10 +69,10 @@ const StockSummary: React.FC = () => {
 				className={`d-flex flex-column ${loading === false ? "" : "justify-content-center"
 					} flex-grow-1 flex-shrink-1`}
 			>
-				{TwelveDataStockTimeSeries?.status !== "" ? (
+				{TwelveDataStockTimeSeries?.status === "ok" ? (
 					<StockHeader stock={TwelveDataStockTimeSeries} />
 				) : null}
-				{TwelveDataStockTimeSeries?.status !== "" ? (
+				{TwelveDataStockTimeSeries?.status === "ok" ? (
 					<>
 						{createGraph()}
 						<StockGraphNav />
@@ -72,33 +87,29 @@ const StockSummary: React.FC = () => {
 					{/* {daily && tickerDetails ? tickerDetails.description : null} */}
 				</section>
 				<section className="stock-information-group container">
-					{TwelveDataQuoteState ? null : 'something'}
-					<Row>
-						<StockDetails
-							sd1={name}
-							sd2={exchange}
-							label1="Name"
-							label2="Exchange"
-						/>
-						<StockDetails
-							sd1={open}
-							sd2={close}
-							label1="Open"
-							label2="Close"
-						/>
-						<StockDetails
-							sd1={high}
-							sd2={low}
-							label1="High"
-							label2="Low"
-						/>
-						<StockDetails
-							sd1={volume}
-							sd2={average_volume}
-							label1="Volume"
-							label2="Average Volume"
-						/>
-					</Row>
+					{TwelveDataQuoteState?.status === "ok" ? (
+						<Row>
+							<StockDetails
+								sd1={name}
+								sd2={exchange}
+								label1="Name"
+								label2="Exchange"
+							/>
+							<StockDetails
+								sd1={open}
+								sd2={close}
+								label1="Open"
+								label2="Close"
+							/>
+							<StockDetails sd1={high} sd2={low} label1="High" label2="Low" />
+							<StockDetails
+								sd1={volume}
+								sd2={average_volume}
+								label1="Volume"
+								label2="Average Volume"
+							/>
+						</Row>
+					) : null}
 				</section>
 			</section>
 		</>

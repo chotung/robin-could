@@ -23,6 +23,7 @@ interface TwelveDataStockQuote {
   percent_change: string;
   average_volume: string;
   fifty_two_week: FiftyTwoWeek;
+  status: string;
 }
 
 type FiftyTwoWeek = {
