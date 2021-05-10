@@ -1,3 +1,0 @@
-const apiKey = "1111111111111111111111111111111111111111";
-
-export default apiKey;
