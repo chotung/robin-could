@@ -69,7 +69,6 @@ const StockSummary: React.FC = () => {
 					<h3>About</h3>
 				</section>
 				<section className="description py-3">
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, animi!
 					{/* {daily && tickerDetails ? tickerDetails.description : null} */}
 				</section>
 				<section className="stock-information-group container">
