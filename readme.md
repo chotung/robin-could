@@ -8,6 +8,6 @@
 
 ## Installation
 
-- API key from polygon.io
+- API key from TwelveData and rename the ExampleApiKey folder and put your key there 
 - npm install to install dependencies
 - npm start to start the application
