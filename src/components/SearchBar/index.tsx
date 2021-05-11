@@ -1,4 +1,4 @@
-import { useState, ReactElement } from "react";
+import React, { useState, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
@@ -7,6 +7,7 @@ import {
 	twelveDataQuote,
 	twelveDataTimeSeries,
 } from "../../clients/twelveData";
+import { company } from "./searchSymbol";
 
 type TickerSearchOption = {
 	label: string;
@@ -24,7 +25,7 @@ export default function SearchBar(): ReactElement {
 			`https://api.twelvedata.com/symbol_search?symbol=${query}`
 		);
 		const items = res.data.data;
-		const labels = items.map((item: any) => ({
+		const labels = items.map((item: company) => ({
 			label: item.symbol,
 			instrumentName: item.instrument_name,
 		}));
@@ -36,13 +37,13 @@ export default function SearchBar(): ReactElement {
 	const handleChange = (e: any) => {
 		if (e.key === "Enter") {
 			console.log("Enter was press");
-			dispatch(twelveDataTimeSeries(undefined, e.target.value));
-			dispatch(twelveDataQuote(undefined, e.target.value));
+			dispatch(twelveDataTimeSeries(undefined, e.currentTarget.value));
+			dispatch(twelveDataQuote(undefined, e.currentTarget.value));
 		}
 	};
 
 	const handleSelectOption = (e: any) => {
-		const selectedTickerSymbol = e.target.firstChild.data;
+		const selectedTickerSymbol = e.currentTarget.firstChild?.data;
 		dispatch(twelveDataTimeSeries(undefined, selectedTickerSymbol));
 		dispatch(twelveDataQuote(undefined, selectedTickerSymbol));
 	};
