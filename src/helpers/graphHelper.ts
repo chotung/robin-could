@@ -6,6 +6,8 @@ const createGradient = (canvas: HTMLCanvasElement) => {
 
 // should separate logic for api and websocket
 
+// type FormatData = { }
+
 export const configureGraph = (
   canvas: HTMLCanvasElement,
   formatData: any,
@@ -13,7 +15,7 @@ export const configureGraph = (
   live: boolean,
   range?: string,
   net?: any
-) => {
+): any => {
   const { open, time } = formatData(stock, "twelveData", range, live);
   const { gradient } = createGradient(canvas);
   const data = {

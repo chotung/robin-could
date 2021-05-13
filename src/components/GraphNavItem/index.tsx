@@ -1,7 +1,6 @@
 import { adjustRange } from "../../helpers/formatData";
 import { useDispatch, useSelector } from "react-redux";
 import {
-	setInterval,
 	setNetGainLoss,
 	stockSelector,
 } from "../../reducers/stocks/StockSlice";
@@ -55,7 +54,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					interval,
 					outputSize,
 					dispatch,
-					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
 					TwelveDataStockTimeSeries.meta.symbol
@@ -71,7 +69,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					interval,
 					outputSize,
 					dispatch,
-					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
 					TwelveDataStockTimeSeries.meta.symbol
@@ -86,7 +83,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					interval,
 					outputSize,
 					dispatch,
-					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
 					TwelveDataStockTimeSeries.meta.symbol
@@ -101,7 +97,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					interval,
 					outputSize,
 					dispatch,
-					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
 					TwelveDataStockTimeSeries.meta.symbol
@@ -116,7 +111,6 @@ const GraphNavItem = (props: NavTabs): ReactElement => {
 					interval,
 					outputSize,
 					dispatch,
-					setInterval,
 					twelveDataTimeSeries,
 					twelveDataQuote,
 					TwelveDataStockTimeSeries.meta.symbol

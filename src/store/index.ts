@@ -1,6 +1,7 @@
 import { configureStore, Action } from "@reduxjs/toolkit";
 import { ThunkAction } from "redux-thunk";
 import stockSliceReducer from "../reducers/stocks/StockSlice";
+import polygonSliceReducer from "../reducers/polygonStock/polygonStockSlice";
 import { StockState } from "../reducers/stocks/types";
 
 // can define them here so you don't have to write it in the slice/reducer
@@ -18,6 +19,7 @@ const store = configureStore({
     // the convention is to name this photos rather than photosStore but photosStore is clearer to me.
     // photosStore: photosSliceReducer,
     stockStore: stockSliceReducer,
+    polygonStore: polygonSliceReducer,
     // anyOtherStore: anyOtherSlice,
     // middleware: ['array of middlewares'],
   },
