@@ -24,7 +24,11 @@ const polygonStockSlice = createSlice({
   },
 });
 
-export const { setLoading, setErrors } = polygonStockSlice.actions;
+export const {
+  setLoading,
+  setErrors,
+  setPolygonStockDetails,
+} = polygonStockSlice.actions;
 export default polygonStockSlice.reducer;
 export const polygonStockSelector = (state: {
   polygonStore: PolygonState;
