@@ -1,2 +1,2 @@
-import { test } from "./polygonClient";
-export { test };
+import { getPolygonTickerDetails } from "./polygonClient";
+export { getPolygonTickerDetails };

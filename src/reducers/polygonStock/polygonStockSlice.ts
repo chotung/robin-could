@@ -17,13 +17,15 @@ const polygonStockSlice = createSlice({
     setErrors: (state, { payload }: PayloadAction<string>) => {
       state.errors = payload;
     },
+
+    setPolygonStockDetails: (state, { payload }: PayloadAction<any>) => {
+      state.polygonStockDetails = payload;
+    },
   },
 });
 
 export const { setLoading, setErrors } = polygonStockSlice.actions;
-
 export default polygonStockSlice.reducer;
-
 export const polygonStockSelector = (state: {
   polygonStore: PolygonState;
 }): PolygonState => state.polygonStore;
