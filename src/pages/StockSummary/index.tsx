@@ -9,11 +9,15 @@ import StockDetails from "../../components/StockDetails";
 import StockGraphNav from "../../components/StockGraphNav";
 import { formatData } from "../../helpers/formatData";
 import { configureGraph } from "../../helpers/graphHelper";
+import SearchBar from "../../components/SearchBar";
 import {
 	twelveDataTimeSeries,
 	twelveDataQuote,
 } from "../../clients/twelveData";
-import SearchBar from "../../components/SearchBar";
+import { getPolygonTickerDetails } from "../../clients/polygon"
+import { polygonStockSelector } from "../../reducers/polygonStock/polygonStockSlice";
+
+
 const StockSummary: React.FC = () => {
 	const dispatch = useDispatch();
 	const {
@@ -22,10 +26,11 @@ const StockSummary: React.FC = () => {
 		loading,
 		netGainLoss,
 	} = useSelector(stockSelector);
-
+	const { polygonStockDetails } = useSelector(polygonStockSelector)
 	useEffect(() => {
 		dispatch(twelveDataTimeSeries());
 		dispatch(twelveDataQuote());
+		dispatch(getPolygonTickerDetails());
 	}, [dispatch]);
 
 	const createGraph = () => {
@@ -77,12 +82,17 @@ const StockSummary: React.FC = () => {
 							<section className="about mt-5 py-3">
 								{TwelveDataQuoteState ? <h3>About</h3> : null}
 							</section>
-							{/* Don't have descriptions with twelveData */}
-							{/* <section className="description py-3"> */}
-							{/* {daily && tickerDetails ? tickerDetails.description : null} */}
-							{/* </section> */}
+							<section className="description py-3">
+								{polygonStockDetails ? polygonStockDetails.description : null}
+							</section>
 							<section className="stock-information-group container py-3">
 								<Row>
+									<StockDetails
+										sd1={polygonStockDetails.ceo}
+										sd2={polygonStockDetails.phone}
+										label1="CEO"
+										label2="Phone Number"
+									/>
 									<StockDetails
 										sd1={name}
 										sd2={exchange}
@@ -106,6 +116,18 @@ const StockSummary: React.FC = () => {
 										sd2={average_volume}
 										label1="Volume"
 										label2="Average Volume"
+									/>
+									<StockDetails
+										sd1={polygonStockDetails.hq_address}
+										sd2={polygonStockDetails.employees.toString()}
+										label1="Address"
+										label2="Employees"
+									/>
+									<StockDetails
+										sd1={polygonStockDetails.marketcap.toString()}
+										sd2={polygonStockDetails.url}
+										label1="Market Cap"
+										label2="Website"
 									/>
 								</Row>
 							</section>

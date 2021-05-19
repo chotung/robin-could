@@ -2,12 +2,12 @@ import { Col } from "reactstrap";
 import "./index.css";
 
 interface StockLabelAndInfo {
-	sd1: string;
-	sd2: string;
+	sd1?: string;
+	sd2?: string;
 	sd3?: string;
 	sd4?: string;
-	label1: string;
-	label2: string;
+	label1?: string;
+	label2?: string;
 	label3?: string;
 	label4?: string;
 }
