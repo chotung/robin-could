@@ -8,6 +8,7 @@ import {
   twelveDataTimeSeries,
 } from "../../clients/twelveData";
 import { company } from "./searchSymbol";
+import { getPolygonTickerDetails } from "../../clients/polygon";
 
 type TickerSearchOption = {
   label: string;
@@ -36,16 +37,17 @@ export default function SearchBar(): ReactElement {
 
   const handleChange = (e: any) => {
     if (e.key === "Enter") {
-      console.log("Enter was press");
-      dispatch(twelveDataTimeSeries(undefined, e.currentTarget.value));
-      dispatch(twelveDataQuote(undefined, e.currentTarget.value));
+      dispatch(twelveDataTimeSeries(undefined, e.target.value));
+      dispatch(twelveDataQuote(undefined, e.target.value));
+      dispatch(getPolygonTickerDetails(e.target.value));
     }
   };
 
   const handleSelectOption = (e: any) => {
-    const selectedTickerSymbol = e.currentTarget.firstChild?.data;
+    const selectedTickerSymbol = e.target.firstChild?.data;
     dispatch(twelveDataTimeSeries(undefined, selectedTickerSymbol));
     dispatch(twelveDataQuote(undefined, selectedTickerSymbol));
+    dispatch(getPolygonTickerDetails(selectedTickerSymbol));
   };
   return (
     <>
@@ -61,7 +63,7 @@ export default function SearchBar(): ReactElement {
         renderMenuItemChildren={(option: TickerSearchOption) => {
           return (
             <>
-              <div onClick={handleSelectOption}>
+              <div onClick={(e) => handleSelectOption(e)}>
                 <span>
                   {option.label}/{option.instrumentName}
                 </span>

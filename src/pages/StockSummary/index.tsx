@@ -29,7 +29,7 @@ const StockSummary: React.FC = () => {
   useEffect(() => {
     dispatch(twelveDataTimeSeries());
     dispatch(twelveDataQuote());
-    dispatch(getPolygonTickerDetails());
+    dispatch(getPolygonTickerDetails(TwelveDataStockTimeSeries.meta.symbol));
   }, [dispatch]);
 
   const createGraph = () => {
@@ -85,52 +85,54 @@ const StockSummary: React.FC = () => {
               <section className="description py-3">
                 {polygonStockDetails ? polygonStockDetails.description : null}
               </section>
-              <section className="stock-information-group container py-3">
-                <Row>
-                  <StockDetails
-                    sd1={polygonStockDetails.ceo}
-                    sd2={polygonStockDetails.phone}
-                    label1="CEO"
-                    label2="Phone Number"
-                  />
-                  <StockDetails
-                    sd1={name}
-                    sd2={exchange}
-                    label1="Name"
-                    label2="Exchange"
-                  />
-                  <StockDetails
-                    sd1={open}
-                    sd2={close}
-                    label1="Open"
-                    label2="Close"
-                  />
-                  <StockDetails
-                    sd1={high}
-                    sd2={low}
-                    label1="High"
-                    label2="Low"
-                  />
-                  <StockDetails
-                    sd1={volume}
-                    sd2={average_volume}
-                    label1="Volume"
-                    label2="Average Volume"
-                  />
-                  <StockDetails
-                    sd1={polygonStockDetails.hq_address}
-                    sd2={polygonStockDetails.employees.toString()}
-                    label1="Address"
-                    label2="Employees"
-                  />
-                  <StockDetails
-                    sd1={polygonStockDetails.marketcap.toString()}
-                    sd2={polygonStockDetails.url}
-                    label1="Market Cap"
-                    label2="Website"
-                  />
-                </Row>
-              </section>
+              {polygonStockDetails.symbol ? (
+                <section className="stock-information-group container py-3">
+                  <Row>
+                    <StockDetails
+                      sd1={polygonStockDetails.ceo}
+                      sd2={polygonStockDetails.phone}
+                      label1="CEO"
+                      label2="Phone Number"
+                    />
+                    <StockDetails
+                      sd1={name}
+                      sd2={exchange}
+                      label1="Name"
+                      label2="Exchange"
+                    />
+                    <StockDetails
+                      sd1={open}
+                      sd2={close}
+                      label1="Open"
+                      label2="Close"
+                    />
+                    <StockDetails
+                      sd1={high}
+                      sd2={low}
+                      label1="High"
+                      label2="Low"
+                    />
+                    <StockDetails
+                      sd1={volume}
+                      sd2={average_volume}
+                      label1="Volume"
+                      label2="Average Volume"
+                    />
+                    <StockDetails
+                      sd1={polygonStockDetails.hq_address}
+                      sd2={polygonStockDetails.employees.toString()}
+                      label1="Address"
+                      label2="Employees"
+                    />
+                    <StockDetails
+                      sd1={polygonStockDetails.marketcap.toString()}
+                      sd2={polygonStockDetails.url}
+                      label1="Market Cap"
+                      label2="Website"
+                    />
+                  </Row>
+                </section>
+              ) : null}
             </section>
           </div>
         </>
